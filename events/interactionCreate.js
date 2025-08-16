@@ -12,12 +12,12 @@ module.exports = {
         // owner only
         if (command.ownerOnly === 1) {
             if (interaction.user.id != o.id) {
-                return interaction.reply({ content: `This is only a command Erin (<@${o.username}>) can use. If you are seeing this in error use the \`/report\` command.`, ephemeral: true });
+                return interaction.reply({ content: `This is only a command Erin (<@${o.username}>) can use.`, flags: Discord.MessageFlags.Ephemeral });
             }
         }
 
         //mod only
-        const modRoles = ['780941276602302523', '822500305353703434', '718253309101867008', '751526654781685912'];
+        const modRoles = ['718253309101867008'];
         let value = 0;
         if (command.modOnly === 1) {
             for (const ID of modRoles) {
@@ -26,16 +26,16 @@ module.exports = {
                 }
 
                 if (value == modRoles.length) {
-                    return interaction.reply({ content: `This is a command only moderators can use. You do not have the required permissions. Moderators have the \`@Moderator\` role or \`@&Junior Mod\` roles. Please run \`/report [issue]\` if you are seeing this in error.`, ephemeral: true });
+                    return interaction.reply({ content: `This is a command only moderators can use. You do not have the required permissions. Moderators have the \`@Moderator\` role.`, flags: Discord.MessageFlags.Ephemeral });
                 }
             }
         }
 
         // botspam channel only
-        const botspam = `433962402292432896`;
+        const botspam = `1406106241255866418`;
         if (command.botSpamOnly === 1) {
             if (interaction.channel.id != botspam) {
-                return interaction.reply({ content: `Please only use this command in the <#${botspam}> channel. This command cannot be used elsewhere. Thank you.`, ephemeral: true })
+                return interaction.reply({ content: `Please only use this command in the <#${botspam}> channel. This command cannot be used elsewhere. Thank you.`, flags: Discord.MessageFlags.Ephemeral })
             }
         }
 
@@ -62,12 +62,7 @@ module.exports = {
         // actually running the commands.
         try {
             //await interaction.deferReply();
-            if(`718253204147798047` === interaction.guild.id) {
-                await client.erinCommands.get(interaction.commandName).execute(interaction, client);
-            }
-            if(`359760149683896320` === interaction.guild.id) {
-                await client.slashCommands.get(interaction.commandName).execute(interaction, client);
-            }
+            await command.execute(interaction, client);
         } catch (error) {
             console.error(error);
             const embed = new Discord.EmbedBuilder()

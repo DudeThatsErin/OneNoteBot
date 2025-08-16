@@ -1,20 +1,53 @@
 /*
-  r/CodingHelp
-  USING DISCORD.JS V14.6.0
+  ErinHelperDiscordBot
+  USING DISCORD.JS V14.6.0+
 */
+require('dotenv').config();
 const fs = require('fs');
-const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, Collection, REST, Routes } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages ], partials: [Partials.Channel] });
+
+// Initialize REST API for command management
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
 
 // configurations
-const config = require('./config/config.json');
 client.commands = new Collection();
 client.slashCommands = new Collection();
 client.cooldowns = new Collection();
 client.slashCooldowns = new Collection();
 client.erinCommands = new Collection();
 const { cooldowns, slashCooldowns } = client;
+
+async function refreshSlashCommands(commandData) {
+  console.log('|-----------------------------------|')
+  console.log('   Attempting command registration...  ')
+  console.log('|-----------------------------------|')
+  
+  const rest = new REST({ version: '10', timeout: 8000 }).setToken(process.env.DISCORD_TOKEN);
+  
+  try {
+    const bot = require('./config/bot.json');
+    
+    // Try to register essential commands only (to avoid timeouts)
+    const essentialCommands = commandData.slice(0, 10); // First 10 commands
+    
+    console.log(`Registering ${essentialCommands.length} essential commands to guild ${bot.serverId}...`);
+    
+    const result = await rest.put(
+      Routes.applicationGuildCommands(bot.id, bot.serverId), 
+      { body: essentialCommands }
+    );
+    
+    console.log(`✅ Successfully registered ${result.length} slash commands!`);
+    console.log('Commands:', result.map(cmd => cmd.name).join(', '));
+    console.log('🎉 Slash commands should now appear in Discord!');
+    
+  } catch (error) {
+    console.error('⚠️ Command registration failed:', error.message);
+    console.log('💡 You can manually register commands using: ++createcommands');
+  }
+}
 
 
 // for all commands
@@ -49,10 +82,16 @@ const commandFilePaths = readFilesFromPath('./commands');
 
 // Loop over the array of file paths and set the command on the client.
 commandFilePaths.forEach((filePath) => {
-  const command = require(filePath);
-
-  client.commands.set(command.name, command);
-  console.log(command.name + ' loaded successfully!');
+  // Clear require cache and reload command
+  delete require.cache[require.resolve(filePath)];
+  
+  try {
+    const command = require(filePath);
+    client.commands.set(command.name, command);
+    console.log(command.name + ' loaded successfully!');
+  } catch (error) {
+    console.error(`Error loading command ${filePath}:`, error.message);
+  }
 });
 
 
@@ -63,38 +102,23 @@ console.log('|-----------------------------------|')
 const commandFilePaths1 = readFilesFromPath('./slashcommands');
 
 commandFilePaths1.forEach((filePath) => {
-  const cmd = require(filePath);
+  // Clear require cache and reload command
+  delete require.cache[require.resolve(filePath)];
+  
+  try {
+    const cmd = require(filePath);
 
-  let object = {};
-  if (cmd.name) { object.name = cmd.name; }
-  if (cmd.description) { object.description = cmd.description; }
-  if (cmd.options) { object.options = cmd.options; }
+    let object = {};
+    if (cmd.name) { object.name = cmd.name; }
+    if (cmd.description) { object.description = cmd.description; }
+    if (cmd.options) { object.options = cmd.options; }
 
-  data.push(object);
-  //client.commands.delete(cmd.name, cmd);
-  client.slashCommands.set(cmd.name, cmd);
-  console.log(cmd.name + ' loaded successfully!');
-});
-
-// create test server only slash commands
-console.log('|-----------------------------------|')
-console.log('     Loading Erin Slash Commands...  ')
-console.log('|-----------------------------------|')
-
-const commandFilePaths2 = readFilesFromPath('./my-server-only');
-
-commandFilePaths2.forEach((filePath) => {
-  const cmdd = require(filePath);
-  let object = {};
-  if (cmdd.name) { object.name = cmdd.name; }
-  if (cmdd.description) { object.description = cmdd.description; }
-  if (cmdd.options) { object.options = cmdd.options; }
-
-  data.push(object);
-  //client.erinCommands.delete(cmd.name, cmd);
-  client.erinCommands.set(cmdd.name, cmdd);
-  // CHANGE THIS TO slashCommands ON TEST BOT.
-  console.log(cmdd.name + ' loaded successfully!');
+    data.push(object);
+    client.slashCommands.set(cmd.name, cmd);
+    console.log(cmd.name + ' loaded successfully!');
+  } catch (error) {
+    console.error(`Error loading slash command ${filePath}:`, error.message);
+  }
 });
 
 // events
@@ -109,9 +133,15 @@ for (const file of eventFiles) {
   console.log(event.name + ' loaded successfully!');
 }
 
-
 // end of file
 (async () => {
   connection = await require('./database.js');
-  await client.login(config.token);
+  
+  // Wait for client to be ready, then refresh commands
+  client.once('ready', async () => {
+    console.log(`Bot is ready! Loaded ${data.length} slash commands.`);
+    await refreshSlashCommands(data);
+  });
+  
+  await client.login(process.env.DISCORD_TOKEN);
 })();

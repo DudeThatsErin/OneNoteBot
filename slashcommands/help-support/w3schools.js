@@ -5,6 +5,11 @@ module.exports = {
     name: 'w3c',
     description: 'Informs our users why they should avoid w3schools like the plague.',
     usage: `/w3c`,
+    
+    data: {
+        name: 'w3c',
+        description: 'Informs our users why they should avoid w3schools like the plague.'
+    },
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
             .setColor(0x7FD839)

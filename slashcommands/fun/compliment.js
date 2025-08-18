@@ -4,15 +4,19 @@ module.exports = {
     name: 'compliment',
     description: 'Give someone (or yourself) a nice compliment!',
     usage: `/compliment [user]`,
-    options: [
-        {
-            name: 'user',
-            description: 'User to compliment (optional)',
-            type: 6,
-            required: false
-        }
-    ],
     botSpamOnly: 1,
+    data: {
+        name: 'compliment',
+        description: 'Give someone (or yourself) a nice compliment!',
+        options: [
+            {
+                name: 'user',
+                description: 'User to compliment (optional)',
+                type: 6,
+                required: false
+            }
+        ]
+    },
     execute(interaction) {
         const targetUser = interaction.options.getUser('user') || interaction.user;
         

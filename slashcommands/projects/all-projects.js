@@ -6,6 +6,11 @@ module.exports = {
     description: 'Displays all of Erin\'s projects in one message',
     usage: '/all-projects',
     ownerOnly: 1,
+    data: {
+        name: 'all-projects',
+        description: 'Displays all of Erin\'s projects in one message'
+    },
+    
     async execute(interaction) {
         const projectsEmbed = new Discord.EmbedBuilder()
             .setColor(0x30d0e8)
@@ -26,6 +31,16 @@ module.exports = {
             .setColor(0xd1bb57)
             .setTitle('What is FileCreator?')
             .setDescription('FileCreator is an open-source Obsidian Plugin that allows me to quickly create PDFs or Markdown files in any folder and prepend or append the current date to them. You can visit the [FileCreator GitHub](https://github.com/DudeThatsErin/FileCreator) to learn more.');
+
+        const ghostyPostyEmbed = new Discord.EmbedBuilder()
+            .setColor(0x193591)
+            .setTitle('What is GhostyPosty?')
+            .setDescription('GhostyPosty is an open-source Obsidian Plugin that allows users to draft blog posts from their Obsidian vault and then upload them as drafts to your Ghost blog. It was an idea [Matt Birchler from A Better Computer](https://birchtree.me/) had back in 2020 but never ended up releasing. I decided to release it when I switched my blog from WordPress to Ghost this year! You can visit the [GhostyPosty GitHub](https://github.com/DudeThatsErin/GhostyPosty) to learn more.');
+
+        const syncthingSyncEmbed = new Discord.EmbedBuilder()
+            .setColor(0x973131)
+            .setTitle('What is SyncthingSync?')
+            .setDescription('SyncthingSync is an open-source (desktop only) Obsidian Plugin that enables the ability to sync with syncthing directly inside Obsidian so you don\'t need to run syncthing separately. You can visit the [SyncthingSync GitHub](https://github.com/DudeThatsErin/SyncthingSync) to learn more.');
 
         const attachmentOrganizerEmbed = new Discord.EmbedBuilder()
             .setColor(0x5bd622)
@@ -50,7 +65,7 @@ module.exports = {
         const fetchedChannel = interaction.guild.channels.cache.get('1406089652854591559'); // announcements channel
         
         try {
-            await fetchedChannel.send({ embeds: [projectsEmbed, noteHostEmbed, quartzNotesEmbed, fileCreatorEmbed, attachmentOrganizerEmbed, appSeekerEmbed, tbeEmbed, sashaAiEmbed] });
+            await fetchedChannel.send({ embeds: [projectsEmbed, noteHostEmbed, quartzNotesEmbed, fileCreatorEmbed, ghostyPostyEmbed, syncthingSyncEmbed, attachmentOrganizerEmbed, appSeekerEmbed, tbeEmbed, sashaAiEmbed] });
             interaction.reply({content: `All projects info posted to announcements!`, flags: Discord.MessageFlags.Ephemeral});
         } catch (error) {
             console.error('Error sending message to channel:', error);

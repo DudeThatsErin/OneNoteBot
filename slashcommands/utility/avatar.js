@@ -5,15 +5,19 @@ module.exports = {
     description: 'Displays a user\'s profile picture as well as links to view them in JPEG, PNG, and WEBP.',
     usage: `/avatar or /avatar [other person\'s username]`,
     example: `/avatar or /avatar @DudeThatsErin`,
-    options: [
-        {
-            name: 'user',
-            description: 'Who\'s avatar would you like to see?',
-            required: false,
-            type: 6
-        }
-    ],
     botSpamOnly: 1,
+    data: {
+        name: 'avatar',
+        description: 'Displays a user\'s profile picture as well as links to view them in JPEG, PNG, and WEBP.',
+        options: [
+            {
+                name: 'user',
+                description: 'Who\'s avatar would you like to see?',
+                required: false,
+                type: 6
+            }
+        ]
+    },
     execute(interaction) {
 
         const person = interaction.options.getUser('user');

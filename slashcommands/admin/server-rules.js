@@ -6,6 +6,11 @@ module.exports = {
     description: 'Displays an embed with a link to read all of our Code of Conduct.',
     usage: `/server-rules`,
     ownerOnly: 1,
+    
+    data: {
+        name: 'server-rules',
+        description: 'Displays an embed with a link to read all of our Code of Conduct.'
+    },
     execute(interaction) {
         const rulesEmbed1 = new Discord.EmbedBuilder()
             .setColor(0x3EBC38)

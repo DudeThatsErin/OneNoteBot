@@ -61,29 +61,43 @@ module.exports = {
 
         // actually running the commands.
         try {
-            //await interaction.deferReply();
             await command.execute(interaction, client);
         } catch (error) {
             console.error(error);
-            const embed = new Discord.EmbedBuilder()
-                .setColor(0x000000)
-                .setTitle('Oh no! An _error_ has appeared!')
-                .addFields({
-                    name: '**Error Name:**',
-                    value: `\`${error.name}\``
-                }, {
-                    name: '**Error Message:**',
-                    value: `\`${error.message}\``
-                }, {
-                    name: '**Error Location:**',
-                    value: `\`${error.stack}\``
-                }, {
-                    name: '**This has been reported!**',
-                    value: `I have pinged Erin so this has already been reported to her. You do not need to do anything else.`
-                })
-                .setTimestamp()
-                .setFooter({ text: `Thanks for using ${client.user.tag}! I'm sorry you encountered this error!`, icon_url: `${client.user.displayAvatarURL()}` });
-            interaction.reply({ content: `Hey, <@${o.id}>! You have an error!`, embeds: [embed] });
+            
+            // Handle interaction timeout errors gracefully
+            if (error.code === 10062 || error.message.includes('Unknown interaction')) {
+                console.log('Interaction expired before response could be sent');
+                return;
+            }
+            
+            try {
+                const embed = new Discord.EmbedBuilder()
+                    .setColor(0x000000)
+                    .setTitle('Oh no! An _error_ has appeared!')
+                    .addFields({
+                        name: '**Error Name:**',
+                        value: `\`${error.name}\``
+                    }, {
+                        name: '**Error Message:**',
+                        value: `\`${error.message}\``
+                    }, {
+                        name: '**Error Location:**',
+                        value: `\`${error.stack}\``
+                    }, {
+                        name: '**This has been reported!**',
+                        value: `I have pinged Erin so this has already been reported to her. You do not need to do anything else.`
+                    })
+                    .setTimestamp()
+                    .setFooter({ text: `Thanks for using ${client.user.tag}! I'm sorry you encountered this error!`, icon_url: `${client.user.displayAvatarURL()}` });
+                
+                // Try to reply, but catch any additional errors
+                if (!interaction.replied && !interaction.deferred) {
+                    await interaction.reply({ content: `Hey, <@${o.id}>! You have an error!`, embeds: [embed] });
+                }
+            } catch (replyError) {
+                console.error('Failed to send error message:', replyError.message);
+            }
         }
 
     }

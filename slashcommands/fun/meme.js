@@ -1,11 +1,14 @@
 const { EmbedBuilder } = require('discord.js');
-const { searchGoogleImages } = require('../../utils/imageSearch');
 
 module.exports = {
     name: 'meme',
     description: 'Get a random programming meme or funny text!',
     usage: `/meme`,
     botSpamOnly: 1,
+    data: {
+        name: 'meme',
+        description: 'Get a random programming meme or funny text!'
+    },
     async execute(interaction) {
         const memes = [
             "```\n// This code works, don't touch it\n// I have no idea why this works\n// But it does, so leave it alone\n```",
@@ -22,8 +25,13 @@ module.exports = {
         
         const randomMeme = memes[Math.floor(Math.random() * memes.length)];
         
-        // Search for a programming meme image
-        const memeImage = await searchGoogleImages('programming meme funny coding');
+        // Get a random meme image from curated collection
+        const memeImages = [
+            'https://i.postimg.cc/6qYJxLhY/meme1.png',
+            'https://i.postimg.cc/Nf8qxK2L/meme2.png',
+            'https://i.postimg.cc/GmXvN4Qh/meme3.png'
+        ];
+        const memeImage = memeImages[Math.floor(Math.random() * memeImages.length)];
         
         const embed = new EmbedBuilder()
             .setColor(0xFF6B35)
@@ -32,10 +40,8 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: `Meme for ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() });
         
-        // Only set thumbnail if we found an image from Google search
-        if (memeImage) {
-            embed.setThumbnail(memeImage);
-        }
+        // Set thumbnail with curated meme image
+        embed.setThumbnail(memeImage);
         
         interaction.reply({ embeds: [embed], flags: 64 });
     }

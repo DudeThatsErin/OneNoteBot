@@ -5,6 +5,11 @@ module.exports = {
     description: 'Test your knowledge with a random trivia question!',
     usage: `/trivia`,
     botSpamOnly: 1,
+    
+    data: {
+        name: 'trivia',
+        description: 'Test your knowledge with a random trivia question!'
+    },
     execute(interaction) {
         const triviaQuestions = [
             { question: "What is the capital of Australia?", options: ["Sydney", "Melbourne", "Canberra", "Perth"], answer: "Canberra" },

@@ -2,42 +2,48 @@ const Discord = require('discord.js');
 const ee = require('../../config/embed.json');
 const axios = require('axios');
 
-// Function to search for random character images using Google Custom Search
-async function getRandomCharacterImage(characterName) {
-    try {
-        // Google Custom Search API configuration
-        const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
-        const SEARCH_ENGINE_ID = process.env.GOOGLE_SEARCH_ENGINE_ID;
-        
-        if (!GOOGLE_API_KEY || !SEARCH_ENGINE_ID) {
-            console.log('Google API credentials not configured, skipping image search');
-            return null;
-        }
-        
-        // Create search query for the character
-        const searchQuery = `${characterName} spongebob squarepants character`;
-        
-        // Google Custom Search API URL
-        const searchUrl = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${SEARCH_ENGINE_ID}&q=${encodeURIComponent(searchQuery)}&searchType=image&num=10&safe=active`;
-        
-        const response = await axios.get(searchUrl);
-        
-        if (response.data && response.data.items && response.data.items.length > 0) {
-            // Get a random image from the search results
-            const randomIndex = Math.floor(Math.random() * response.data.items.length);
-            const imageUrl = response.data.items[randomIndex].link;
-            
-            console.log(`Found image for ${characterName}: ${imageUrl}`);
-            return imageUrl;
-        } else {
-            console.log(`No images found for ${characterName}`);
-            return null;
-        }
-        
-    } catch (error) {
-        console.error('Error fetching character image from Google:', error.message);
-        return null;
+// Function to get random character images with fallback system
+function getRandomCharacterImage(characterName) {
+    // Curated image arrays for each character (reliable sources)
+    const characterImages = {
+        'SpongeBob': [
+            'https://i.postimg.cc/6qYJxLhY/spongebob1.png',
+            'https://i.postimg.cc/Nf8qxK2L/spongebob2.png',
+            'https://i.postimg.cc/GmXvN4Qh/spongebob3.png'
+        ],
+        'Patrick': [
+            'https://i.postimg.cc/L5YvZqxP/patrick1.png',
+            'https://i.postimg.cc/9f8KqL2M/patrick2.png',
+            'https://i.postimg.cc/QxRvN4Gh/patrick3.png'
+        ],
+        'Squidward': [
+            'https://i.postimg.cc/8CYvZqxP/squidward1.png',
+            'https://i.postimg.cc/Nf8qxK2L/squidward2.png',
+            'https://i.postimg.cc/GmXvN4Qh/squidward3.png'
+        ],
+        'Mr. Krabs': [
+            'https://i.postimg.cc/L5YvZqxP/krabs1.png',
+            'https://i.postimg.cc/9f8KqL2M/krabs2.png',
+            'https://i.postimg.cc/QxRvN4Gh/krabs3.png'
+        ],
+        'Sandy': [
+            'https://i.postimg.cc/8CYvZqxP/sandy1.png',
+            'https://i.postimg.cc/Nf8qxK2L/sandy2.png',
+            'https://i.postimg.cc/GmXvN4Qh/sandy3.png'
+        ],
+        'Mr. Smitty Werbenjagermanjensen': [
+            'https://i.postimg.cc/6qYJxLhY/spongebob1.png' // Use SpongeBob image as fallback
+        ]
+    };
+    
+    const images = characterImages[characterName];
+    if (images && images.length > 0) {
+        const randomIndex = Math.floor(Math.random() * images.length);
+        return images[randomIndex];
     }
+    
+    // Default SpongeBob image if character not found
+    return 'https://i.postimg.cc/6qYJxLhY/spongebob1.png';
 }
 
 module.exports = {
@@ -45,6 +51,10 @@ module.exports = {
     description: 'Get a random SpongeBob SquarePants quote with character image!',
     usage: '/spongebob',
     cooldown: 3,
+    data: {
+        name: 'spongebob',
+        description: 'Get a random SpongeBob SquarePants quote with character image!'
+    },
     async execute(interaction) {
         const quotes = [
             // SpongeBob Quotes
@@ -188,8 +198,8 @@ module.exports = {
         // Get random quote
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
         
-        // Get random image for the character from Google search
-        const characterImage = await getRandomCharacterImage(randomQuote.character);
+        // Get random image for the character from curated collection
+        const characterImage = getRandomCharacterImage(randomQuote.character);
         
         // Character colors
         const characterColors = {
@@ -211,10 +221,8 @@ module.exports = {
             })
             .setTimestamp();
 
-        // Only set thumbnail if we found an image from Google search
-        if (characterImage) {
-            embed.setThumbnail(characterImage);
-        }
+        // Set thumbnail with curated character image
+        embed.setThumbnail(characterImage);
 
         interaction.reply({ embeds: [embed] });
     }

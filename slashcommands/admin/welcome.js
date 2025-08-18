@@ -6,6 +6,11 @@ module.exports = {
     description: 'Displays information about our server.',
     usage: `/welcome`,
     modOnly: 1,
+    
+    data: {
+        name: 'welcome',
+        description: 'Displays information about our server.'
+    },
     execute(interaction) {
 
         const welcomeEmbed = new Discord.EmbedBuilder()

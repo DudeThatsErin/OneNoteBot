@@ -4,15 +4,19 @@ module.exports = {
     name: '8ball',
     description: 'Ask the magic 8-ball a question!',
     usage: `/8ball [question]`,
-    options: [
-        {
-            name: 'question',
-            description: 'What do you want to ask the magic 8-ball?',
-            type: 3,
-            required: true
-        }
-    ],
     botSpamOnly: 1,
+    data: {
+        name: '8ball',
+        description: 'Ask the magic 8-ball a question!',
+        options: [
+            {
+                name: 'question',
+                description: 'What do you want to ask the magic 8-ball?',
+                type: 3,
+                required: true
+            }
+        ]
+    },
     execute(interaction) {
         const question = interaction.options.getString('question');
         

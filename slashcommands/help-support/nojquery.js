@@ -4,6 +4,11 @@ module.exports = {
     name: 'nojquery',
     usage: `/nojquery`,
     description: 'Sends information on why JQuery isn’t used and is bad to use.',
+    
+    data: {
+        name: 'nojquery',
+        description: 'Sends information on why JQuery isn’t used and is bad to use.'
+    },
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
             .setColor(0x474961)

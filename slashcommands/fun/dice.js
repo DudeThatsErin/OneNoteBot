@@ -4,21 +4,25 @@ module.exports = {
     name: 'dice',
     description: 'Roll dice! Supports multiple dice and different sides.',
     usage: `/dice [sides] [count]`,
-    options: [
-        {
-            name: 'sides',
-            description: 'Number of sides on the dice (default: 6)',
-            type: 4,
-            required: false
-        },
-        {
-            name: 'count',
-            description: 'Number of dice to roll (default: 1, max: 10)',
-            type: 4,
-            required: false
-        }
-    ],
     botSpamOnly: 1,
+    data: {
+        name: 'dice',
+        description: 'Roll dice! Supports multiple dice and different sides.',
+        options: [
+            {
+                name: 'sides',
+                description: 'Number of sides on the dice (default: 6)',
+                type: 4,
+                required: false
+            },
+            {
+                name: 'count',
+                description: 'Number of dice to roll (default: 1, max: 10)',
+                type: 4,
+                required: false
+            }
+        ]
+    },
     execute(interaction) {
         const sides = interaction.options.getInteger('sides') || 6;
         const count = Math.min(interaction.options.getInteger('count') || 1, 10);

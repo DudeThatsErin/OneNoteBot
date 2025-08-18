@@ -5,6 +5,11 @@ module.exports = {
     name: 'djslangfirst',
     description: 'Asks users to learn JavaScript before trying to learn Discord.js',
     usage: `/djslangfirst`,
+    
+    data: {
+        name: 'djslangfirst',
+        description: 'Asks users to learn JavaScript before trying to learn Discord.js'
+    },
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
             .setColor(0x39D897)

@@ -4,20 +4,24 @@ module.exports = {
     name: 'rps',
     description: 'Play Rock, Paper, Scissors against the bot!',
     usage: `/rps [choice]`,
-    options: [
-        {
-            name: 'choice',
-            description: 'Your choice: rock, paper, or scissors',
-            type: 3,
-            required: true,
-            choices: [
-                { name: 'Rock', value: 'rock' },
-                { name: 'Paper', value: 'paper' },
-                { name: 'Scissors', value: 'scissors' }
-            ]
-        }
-    ],
     botSpamOnly: 1,
+    data: {
+        name: 'rps',
+        description: 'Play Rock, Paper, Scissors against the bot!',
+        options: [
+            {
+                name: 'choice',
+                description: 'Your choice: rock, paper, or scissors',
+                type: 3,
+                required: true,
+                choices: [
+                    { name: 'Rock', value: 'rock' },
+                    { name: 'Paper', value: 'paper' },
+                    { name: 'Scissors', value: 'scissors' }
+                ]
+            }
+        ]
+    },
     execute(interaction) {
         const userChoice = interaction.options.getString('choice');
         const botChoices = ['rock', 'paper', 'scissors'];

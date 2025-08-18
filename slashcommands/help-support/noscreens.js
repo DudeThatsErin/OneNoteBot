@@ -4,6 +4,11 @@ module.exports = {
     name: 'noscreens',
     usage: `/noscreens`,
     description: 'Sends information on why it is best to avoid sending screenshots of your code.',
+    
+    data: {
+        name: 'noscreens',
+        description: 'Sends information on why it is best to avoid sending screenshots of your code.'
+    },
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
             .setColor(0xCA3FD3)

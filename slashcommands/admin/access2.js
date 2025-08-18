@@ -7,6 +7,10 @@ module.exports = {
     description: 'Displays an embed telling people how to get access to our server.',
     usage: `/access-two`,
     ownerOnly: 1,
+    data: {
+        name: 'access-two',
+        description: 'Displays an embed telling people how to get access to our server.'
+    },
     async execute(interaction) {
 
         const accessEmbed = new Discord.EmbedBuilder()

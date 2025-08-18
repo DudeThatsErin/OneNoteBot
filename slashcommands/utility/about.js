@@ -8,6 +8,11 @@ module.exports = {
     description: 'Displays information about the bot.',
     usage: `/about`,
     cooldown: 5,
+    
+    data: {
+        name: 'about',
+        description: 'Displays information about the bot.'
+    },
     execute(interaction, client) {
         let embed = {
             color: 0xffffff,

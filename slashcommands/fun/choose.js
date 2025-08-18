@@ -4,15 +4,19 @@ module.exports = {
     name: 'choose',
     description: 'Can\'t decide? Let me choose for you!',
     usage: `/choose [options separated by commas]`,
-    options: [
-        {
-            name: 'options',
-            description: 'Options to choose from (separate with commas)',
-            type: 3,
-            required: true
-        }
-    ],
     botSpamOnly: 1,
+    data: {
+        name: 'choose',
+        description: 'Can\'t decide? Let me choose for you!',
+        options: [
+            {
+                name: 'options',
+                description: 'Options to choose from (separate with commas)',
+                type: 3,
+                required: true
+            }
+        ]
+    },
     execute(interaction) {
         const input = interaction.options.getString('options');
         const choices = input.split(',').map(choice => choice.trim()).filter(choice => choice.length > 0);

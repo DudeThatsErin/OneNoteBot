@@ -7,14 +7,18 @@ module.exports = {
     description: 'Creates a suggestion!',
     usage: `/suggestions [suggestion here]`,
     example: `/suggestions I want pudding!`,
-    options: [
-        {
-            name: 'message',
-            description: 'What is your suggestion?',
-            type: 3,
-            required: true
-        }
-    ],
+    data: {
+        name: 'suggestions',
+        description: 'Creates a suggestion!',
+        options: [
+            {
+                name: 'message',
+                description: 'What is your suggestion?',
+                type: 3,
+                required: true
+            }
+        ]
+    },
     async execute(interaction){
         const channel = interaction.guild.channels.cache.find(c => c.id === bot.suggestionsId); //test-2 channel ID 1029428940705632326 OR bot.suggestionsId
         let messageArgs = interaction.options.getString('message');

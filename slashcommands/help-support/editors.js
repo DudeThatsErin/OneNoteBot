@@ -4,6 +4,11 @@ module.exports = {
     name: 'editors',
     description: 'Sends information on commonly used IDEs or Text Editors.',
     usage: `/editors`,
+    
+    data: {
+        name: 'editors',
+        description: 'Sends information on commonly used IDEs or Text Editors.'
+    },
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
             .setColor(0xB87364)

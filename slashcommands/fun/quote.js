@@ -1,11 +1,14 @@
 const { EmbedBuilder } = require('discord.js');
-const { searchGoogleImages } = require('../../utils/imageSearch');
 
 module.exports = {
     name: 'quote',
     description: 'Get a random inspirational quote!',
     usage: `/quote`,
     botSpamOnly: 1,
+    data: {
+        name: 'quote',
+        description: 'Get a random inspirational quote!'
+    },
     async execute(interaction) {
         const quotes = [
             { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
@@ -27,8 +30,13 @@ module.exports = {
         
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
         
-        // Search for an inspirational quote image
-        const quoteImage = await searchGoogleImages('inspirational quotes motivation success');
+        // Get a random quote image from curated collection
+        const quoteImages = [
+            'https://i.postimg.cc/6qYJxLhY/quote1.png',
+            'https://i.postimg.cc/Nf8qxK2L/quote2.png',
+            'https://i.postimg.cc/GmXvN4Qh/quote3.png'
+        ];
+        const quoteImage = quoteImages[Math.floor(Math.random() * quoteImages.length)];
         
         const embed = new EmbedBuilder()
             .setColor(0x4ECDC4)
@@ -38,10 +46,8 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() });
         
-        // Only set thumbnail if we found an image from Google search
-        if (quoteImage) {
-            embed.setThumbnail(quoteImage);
-        }
+        // Set thumbnail with curated quote image
+        embed.setThumbnail(quoteImage);
         
         interaction.reply({ embeds: [embed], flags: 64 });
     }

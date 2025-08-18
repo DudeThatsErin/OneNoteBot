@@ -4,6 +4,11 @@ module.exports = {
     name: 'dom-listening',
     usage: `/dom-listening`,
     description: 'Sends information about why not to use dom listening attributes/properties.',
+    
+    data: {
+        name: 'dom-listening',
+        description: 'Sends information about why not to use dom listening attributes/properties.'
+    },
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
             .setColor(0xEC4E49)

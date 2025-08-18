@@ -5,6 +5,11 @@ module.exports = {
     description: 'Emptys the Suggestion Database.',
     usage: `/clearsuggs`,
     ownerOnly: 1,
+    data: {
+        name: 'clearsuggs',
+        description: 'Emptys the Suggestion Database.'
+    },
+    
     async execute(interaction) {
 
         connection.query(`TRUNCATE TABLE Suggs;`);

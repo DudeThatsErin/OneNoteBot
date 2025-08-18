@@ -7,6 +7,11 @@ module.exports = {
     description: 'Makes sure the bot can hear commands.',
     usage: `/ping `,
     cooldown: 5,
+    
+    data: {
+        name: 'ping',
+        description: 'Makes sure the bot can hear commands.'
+    },
     execute(interaction, client) {
         let days = Math.floor(client.uptime / 86400000);
         let hours = Math.floor(client.uptime / 3600000) % 24;

@@ -9,8 +9,13 @@ module.exports = {
   aliases: ['endslash', 'delete-commands'],
   description: 'Allows Erin to delete the Slash Commands.',
   ownerOnly: 1,
-  execute(message) {
-    const rest = new REST({ version: '10' }).setToken(token);
+  execute(message, client) {
+    // Use the shared REST instance from the client
+    const rest = client.rest;
+    if (!rest) {
+      console.error('❌ No REST instance found on client!');
+      return message.reply('❌ REST client not available. Please restart the bot.');
+    }
 
     (async () => {
         try {

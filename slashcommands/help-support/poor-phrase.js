@@ -4,7 +4,12 @@ module.exports = {
 	name: 'poorly-phrased',
 	description: 'Asks people to explain their questions better.',
 	usage: `/poorly-phrased`,
-	execute(interaction) {
+	
+    data: {
+        name: 'poorly-phrased',
+        description: 'Asks people to explain their questions better.'
+    },
+    execute(interaction) {
     const row = new ActionRowBuilder()
     .addComponents(
       new ButtonBuilder()

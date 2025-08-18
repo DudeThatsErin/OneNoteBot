@@ -6,6 +6,11 @@ module.exports = {
     description: 'Displays an embed with information on the benefits to becoming a server booster.',
     usage: `/boosters`,
     ownerOnly: 1,
+    
+    data: {
+        name: 'boosters',
+        description: 'Displays an embed with information on the benefits to becoming a server booster.'
+    },
     execute(interaction) {
       const boosters = new Discord.EmbedBuilder()
         .setColor(0xFFA500)

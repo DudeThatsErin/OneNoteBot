@@ -5,6 +5,11 @@ module.exports = {
     name: 'freelance',
     description: 'Allows users to get information on how to self employment or freelancing.',
     usage: `/freelance`,
+    
+    data: {
+        name: 'freelance',
+        description: 'Allows users to get information on how to self employment or freelancing.'
+    },
     execute(interaction) {
         let embed = new Discord.EmbedBuilder()
             .setColor(0x497AEC)

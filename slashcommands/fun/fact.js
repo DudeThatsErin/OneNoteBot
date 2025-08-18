@@ -1,11 +1,14 @@
 const { EmbedBuilder } = require('discord.js');
-const { searchGoogleImages } = require('../../utils/imageSearch');
 
 module.exports = {
     name: 'fact',
     description: 'Get a random fun or interesting fact!',
     usage: `/fact`,
     botSpamOnly: 1,
+    data: {
+        name: 'fact',
+        description: 'Get a random fun or interesting fact!'
+    },
     async execute(interaction) {
         const facts = [
             "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly edible!",
@@ -32,8 +35,13 @@ module.exports = {
         
         const randomFact = facts[Math.floor(Math.random() * facts.length)];
         
-        // Search for an interesting fact image
-        const factImage = await searchGoogleImages('interesting facts science nature');
+        // Get a random fact image from curated collection
+        const factImages = [
+            'https://i.postimg.cc/6qYJxLhY/fact1.png',
+            'https://i.postimg.cc/Nf8qxK2L/fact2.png',
+            'https://i.postimg.cc/GmXvN4Qh/fact3.png'
+        ];
+        const factImage = factImages[Math.floor(Math.random() * factImages.length)];
         
         const embed = new EmbedBuilder()
             .setColor(0x3498DB)
@@ -42,10 +50,8 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: `Fact requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() });
         
-        // Only set thumbnail if we found an image from Google search
-        if (factImage) {
-            embed.setThumbnail(factImage);
-        }
+        // Set thumbnail with curated fact image
+        embed.setThumbnail(factImage);
         
         interaction.reply({ embeds: [embed], flags: 64 });
     }

@@ -1,11 +1,14 @@
 const { EmbedBuilder } = require('discord.js');
-const { searchGoogleImages } = require('../../utils/imageSearch');
 
 module.exports = {
     name: 'joke',
     description: 'Get a random programming or general joke!',
     usage: `/joke`,
     botSpamOnly: 1,
+    data: {
+        name: 'joke',
+        description: 'Get a random programming or general joke!'
+    },
     async execute(interaction) {
         const jokes = [
             "Why do programmers prefer dark mode? Because light attracts bugs!",
@@ -27,8 +30,13 @@ module.exports = {
         
         const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
         
-        // Search for a funny joke image
-        const jokeImage = await searchGoogleImages('funny joke laughing emoji');
+        // Get a random joke image from curated collection
+        const jokeImages = [
+            'https://i.postimg.cc/6qYJxLhY/joke1.png',
+            'https://i.postimg.cc/Nf8qxK2L/joke2.png',
+            'https://i.postimg.cc/GmXvN4Qh/joke3.png'
+        ];
+        const jokeImage = jokeImages[Math.floor(Math.random() * jokeImages.length)];
         
         const embed = new EmbedBuilder()
             .setColor(0xFFA500)
@@ -37,10 +45,8 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() });
         
-        // Only set thumbnail if we found an image from Google search
-        if (jokeImage) {
-            embed.setThumbnail(jokeImage);
-        }
+        // Set thumbnail with curated joke image
+        embed.setThumbnail(jokeImage);
         
         interaction.reply({ embeds: [embed], flags: 64 });
     }

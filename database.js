@@ -1,8 +1,8 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-// Use the same database as the QuartzNotes site
-const dbPath = process.env.DB_PATH || path.join('/var/www/quartznotes', 'quartznote.db');
+// Use separate database for Discord bot
+const dbPath = process.env.DB_PATH || path.join(__dirname, 'bot.db');
 
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {

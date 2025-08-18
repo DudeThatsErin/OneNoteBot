@@ -7,6 +7,11 @@ module.exports = {
     description: 'Sends information about hosting providers.',
     usage: `/largehosting`,
     botSpamOnly: 1,
+    
+    data: {
+        name: 'largehosting',
+        description: 'Sends information about hosting providers.'
+    },
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
             .setColor(0xD3D13F)

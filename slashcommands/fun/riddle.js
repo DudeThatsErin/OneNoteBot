@@ -5,6 +5,11 @@ module.exports = {
     description: 'Get a brain-teasing riddle to solve!',
     usage: `/riddle`,
     botSpamOnly: 1,
+    
+    data: {
+        name: 'riddle',
+        description: 'Get a brain-teasing riddle to solve!'
+    },
     execute(interaction) {
         const riddles = [
             { question: "I speak without a mouth and hear without ears. I have no body, but come alive with wind. What am I?", answer: "An echo" },

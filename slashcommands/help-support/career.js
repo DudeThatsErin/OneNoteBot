@@ -5,6 +5,11 @@ module.exports = {
     name: 'career',
     description: 'Allows users to get information on how to get careers in the IT field.',
     usage: `/career`,
+    
+    data: {
+        name: 'career',
+        description: 'Allows users to get information on how to get careers in the IT field.'
+    },
     execute(interaction) {
         let embed = new Discord.EmbedBuilder()
             .setColor(0x1E3568)

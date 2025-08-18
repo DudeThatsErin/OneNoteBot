@@ -5,6 +5,11 @@ module.exports = {
     description: 'Provides a link to users to allow them to invite other users to the server.',
     usage: `/invite`,
     botSpamOnly: 1,
+    
+    data: {
+        name: 'invite',
+        description: 'Provides a link to users to allow them to invite other users to the server.'
+    },
     execute(interaction) {
       const row = new ActionRowBuilder()
         .addComponents(

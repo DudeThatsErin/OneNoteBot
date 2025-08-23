@@ -32,10 +32,10 @@ module.exports = {
         }
 
         // botspam channel only
-        const botspam = `1406106241255866418`;
+        const botspam = [`1406106241255866418`, `1406112392651210802`];
         if (command.botSpamOnly === 1) {
-            if (interaction.channel.id != botspam) {
-                return interaction.reply({ content: `Please only use this command in the <#${botspam}> channel. This command cannot be used elsewhere. Thank you.`, flags: Discord.MessageFlags.Ephemeral })
+            if (!botspam.includes(interaction.channel.id)) {
+                return interaction.reply({ content: `Please only use this command in the <#${botspam[0]}> channel. This command cannot be used elsewhere. Thank you.`, flags: Discord.MessageFlags.Ephemeral })
             }
         }
 

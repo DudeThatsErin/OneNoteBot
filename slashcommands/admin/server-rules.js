@@ -12,6 +12,7 @@ module.exports = {
         description: 'Displays an embed with a link to read all of our Code of Conduct.'
     },
     execute(interaction) {
+        // TODO UPDATE
         const rulesEmbed1 = new Discord.EmbedBuilder()
             .setColor(0x3EBC38)
             .setTitle('Our Rules')

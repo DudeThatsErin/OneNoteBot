@@ -2,13 +2,13 @@
   ErinHelperDiscordBot
   USING DISCORD.JS V14.6.0+
 */
-require('dotenv').config();
 const fs = require('fs');
 const { Client, GatewayIntentBits, Partials, Collection, REST } = require('discord.js');
+const config = require('./utils/config');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages ], partials: [Partials.Channel] });
 
 // Create a shared REST instance for the entire bot
-const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+const rest = new REST({ version: '10' }).setToken(config.token);
 
 // Set up rate limit event listener on the shared REST instance
 rest.on('rateLimited', (info) => {
@@ -106,5 +106,5 @@ for (const file of eventFiles) {
 // Start the bot (commands are deployed via createcommands prefix command)
 (async () => {
   await require('./database.js');
-  await client.login(process.env.DISCORD_TOKEN);
+  await client.login(config.token);
 })();

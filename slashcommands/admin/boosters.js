@@ -13,6 +13,7 @@ module.exports = {
     },
     execute(interaction) {
       const boosters = new Discord.EmbedBuilder()
+        // TODO UPDATE
         .setColor(0xFFA500)
         .setTitle('Would you like to become a server booster?')
         .setDescription(`Thanks for wanting to become a server booster. We have tons of benefits which you receive just by boosting our QuartzNotes community server.`)

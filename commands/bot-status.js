@@ -27,7 +27,7 @@ module.exports = {
             .setTitle('Bot Update!')
             .setDescription(reason)
             .setTimestamp()
-            .setFooter({text: 'Want to suggest a feature for the bot? Use /suggestions'});
+            .setFooter({text: 'Want to suggest a feature for the bot? Use /suggestions', iconURL: bot.avatar, timestamp: new Date()});
 
         try {
             await channel.send({ embeds: [embed] });

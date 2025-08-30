@@ -1,4 +1,4 @@
-const config = require('../../config/config.json');
+const config = require('../../utils/config');
 const bot = require('../../config/bot.json');
 const owner = require('../../config/owner.json');
 
@@ -19,10 +19,10 @@ module.exports = {
         let seconds = Math.floor(client.uptime / 1000) % 60;
 
         let embed = {
-          color: 0xffffff,
+          color: config.getColor('white'),
           title: `${bot.name} is online!`,
           thumbnail: {
-            url: bot.avatar
+            url: bot.image
           },
           description:`Thanks for checking if ${bot.name} was online. ${bot.name} has been awake for \`${days}d ${hours}h ${minutes}m ${seconds}s\`! That is the last time ${owner.name} reset ${bot.name}. You can see the uptime of my website [here](${bot.uptime})!\nMy prefix is \`${config.prefix}\``,
           timestamp: new Date(),

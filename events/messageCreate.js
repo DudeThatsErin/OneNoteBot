@@ -1,6 +1,6 @@
-require('dotenv').config();
 const me = require('../config/owner.json');
 const Discord = require('discord.js');
+const config = require('../utils/config');
 
 module.exports = {
     name: 'messageCreate',
@@ -17,11 +17,11 @@ module.exports = {
             //console.log('bot message');
             return;
         };
-        if (!message.content.startsWith(process.env.PREFIX)) {
+        if (!message.content.startsWith(config.prefix)) {
             //console.log('does not start with prefix.');
             return;
         };
-        const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/);
+        const args = message.content.slice(config.prefix.length).trim().split(/ +/);
         const commandName = args.shift().toLowerCase();
         const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
         if (!command) return message.channel.send({ content: `That command does not exist. Run \`/help\` to see all of my commands.` });

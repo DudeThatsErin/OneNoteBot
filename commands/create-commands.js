@@ -105,11 +105,20 @@ module.exports = {
 
       // Deploy commands to Discord
       const data = await rest.put(
-        Routes.applicationGuildCommands(bot.id, bot.serverId),
+        Routes.applicationGuildCommands(bot.id, bot.myServerId),
         { body: commands },
       );
 
+      // TO DO: REMOVE THIS WHEN IT IS IN THAT SERVER
+      // Deploy commands to Discord
+      // const data2 = await rest.put(
+      //   Routes.applicationGuildCommands(bot.id, bot.oneNoteServerId),
+      //   { body: commands },
+      // );
+
+
       console.log('data result: ', data);
+      // console.log('data2 result: ', data2);
 
       console.log(`✅ Successfully reloaded ${data.length} application (/) commands.`);
       message.reply(`✅ Successfully deployed ${data.length} slash commands!`);

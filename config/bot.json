@@ -1,13 +1,15 @@
 {
-  "tag": "Erin's Helper Bot#1301",
-	"name": "Erin's Helper Bot",
-	"id": "791803587432677427",
-	"server": "https://discord.gg/zgkMsNcBPT",
-	"avatar": "https://cdn.discordapp.com/avatars/791803587432677427/a60bcd28ec4d668b1728432cdd99559a.png?size=4096",
+  "tag": "OneNote#9974",
+	"name": "OneNote Bot",
+	"id": "838212312883396668",
+	"image": "https://www.usu.edu/teach/images/onenote-thumbnail.jpeg",
+	"avatar": "https://cdn.discordapp.com/avatars/838212312883396668/17787ee5bad8a7771b0e8d356267fec4?size=256",
 	"uptime": "https://stats.uptimerobot.com/0pj23Sk01K",
-	"inviteLink": "https://discord.com/oauth2/authorize?client_id=791803587432677427&permissions=8&integration_type=0&scope=bot+applications.commands",
+	"inviteLink": "COMING SOON",
+	"botInviteLink": "https://discord.com/oauth2/authorize?client_id=838212312883396668&permissions=8&integration_type=0&scope=bot+applications.commands",
 	"ownerID": "455926927371534346",
-	"serverId": "718253204147798047",
+	"onenoteServerId": "718253204147798047",
+	"myServerId": "718253204147798047",
 	"suggestionsId": "1406095003666612254",
 	"announcementsId": "1406098738178691224"
 }

@@ -13,6 +13,8 @@ module.exports = {
     },
     async execute(interaction) {
 
+        // TODO UPDATE
+
         const accessEmbed = new Discord.EmbedBuilder()
             .setColor(0xFFA500)
             .setTitle('Get Access to Our Server!')

@@ -2,7 +2,7 @@ require('dotenv').config();
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const bot = require('../config/bot.json');
-const token = process.env.DISCORD_TOKEN;
+const config = require('../utils/config');
 
 module.exports = {
   name: 'deletecommands',

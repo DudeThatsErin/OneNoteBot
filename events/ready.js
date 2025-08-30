@@ -1,5 +1,5 @@
 const { REST } = require('discord.js');
-
+const config = require('../utils/config');
 module.exports = {
     name: 'ready',
     once: true,
@@ -23,6 +23,6 @@ module.exports = {
         console.log('             Error Logs...           ')
         console.log('|-----------------------------------|')
 
-        client.user.setPresence({ activities: [{ name: 'Use ++ or / prefix' }] });
+        client.user.setPresence({ activities: [{ name: `Use ${config.prefix} or / prefix` }] });
     }
 }

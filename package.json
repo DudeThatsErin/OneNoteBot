@@ -1,4 +1,13 @@
 {
+  "name": "OneNoteBot",
+  "version": "1.0.0",
+  "description": "A bot for OneNote",
+  "author": "Erin",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "@psibean/discord.js-pagination": "^4.0.5",
     "discord.js": "^14.21.0",

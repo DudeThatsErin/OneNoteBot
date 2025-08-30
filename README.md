@@ -76,7 +76,3 @@ The bot uses Discord.js v14 and supports:
 - Role-based permission checking
 - Multi-server deployment
 - Automatic command registration
-
-## License
-
-MIT License - See LICENSE file for details

@@ -1,22 +1,19 @@
 const { EmbedBuilder } = require('discord.js');
+const embedConfig = require('../../config/embed.json');
 
 module.exports = {
     name: '8ball',
     description: 'Ask the magic 8-ball a question!',
+    options: [
+        {
+            name: 'question',
+            description: 'The question you want to ask the magic 8-ball',
+            required: true,
+            type: 3
+        }
+    ],
     usage: `/8ball [question]`,
     botSpamOnly: 1,
-    data: {
-        name: '8ball',
-        description: 'Ask the magic 8-ball a question!',
-        options: [
-            {
-                name: 'question',
-                description: 'What do you want to ask the magic 8-ball?',
-                type: 3,
-                required: true
-            }
-        ]
-    },
     execute(interaction) {
         const question = interaction.options.getString('question');
         
@@ -46,7 +43,7 @@ module.exports = {
         const randomResponse = responses[Math.floor(Math.random() * responses.length)];
         
         const embed = new EmbedBuilder()
-            .setColor(0x8B00FF)
+            .setColor(parseInt(embedConfig.yellow_color, 16))
             .setTitle('🎱 Magic 8-Ball')
             .addFields(
                 { name: 'Question:', value: question },
@@ -55,6 +52,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: `Asked by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() });
         
-        interaction.reply({ embeds: [embed], flags: 64 });
+        interaction.reply({ embeds: [embed] });
     }
 };

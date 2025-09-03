@@ -5,10 +5,6 @@ module.exports = {
     description: 'Get a random inspirational quote!',
     usage: `/quote`,
     botSpamOnly: 1,
-    data: {
-        name: 'quote',
-        description: 'Get a random inspirational quote!'
-    },
     async execute(interaction) {
         const quotes = [
             { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
@@ -39,7 +35,7 @@ module.exports = {
         const quoteImage = quoteImages[Math.floor(Math.random() * quoteImages.length)];
         
         const embed = new EmbedBuilder()
-            .setColor(0x4ECDC4)
+            .setColor(parseInt(config.teal_color, 16))
             .setTitle('💭 Random Quote')
             .setDescription(`*"${randomQuote.text}"*`)
             .addFields({ name: 'Author:', value: randomQuote.author })

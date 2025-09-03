@@ -4,18 +4,15 @@ module.exports = {
     name: 'faq',
     description: 'Tells users to check out our FAQ channel and docs to get their simple questions answered.',
     usage: `/faq [user]`,
-    data: {
-        name: 'faq',
-        description: 'Tells users to check out our FAQ channel and docs to get their simple questions answered.',
-        options: [
-            {
-                name: 'user',
-                description: 'User to send FAQ info to',
-                type: 6,
-                required: false
-            }
-        ]
-    },
+    botSpamOnly: 1,
+    options: [
+        {
+            name: 'user',
+            description: 'User to send FAQ info to',
+            type: 6,
+            required: false
+        }
+    ],
     execute(interaction) {
         const row = new ActionRowBuilder()
             .addComponents(

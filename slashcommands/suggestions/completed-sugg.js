@@ -88,7 +88,7 @@ module.exports = {
 
             
                 const denied = new Discord.EmbedBuilder()
-                    .setColor(0x6E3EA4)
+                    .setColor(parseInt(embedConfig.violet_color, 16))
                     .setAuthor({name: name, iconURL:avatar})
                     .setDescription(suggestion)
                     .addFields(

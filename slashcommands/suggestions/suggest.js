@@ -1,26 +1,30 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const bot = require('../../config/bot.json');
+const { getServerConfig } = require('../../utils/serverConfig');
+const embedConfig = require('../../config/embed.json');
 
 module.exports = {
     name: 'suggestions',
     description: 'Creates a suggestion!',
     usage: `/suggestions [suggestion here]`,
     example: `/suggestions I want pudding!`,
-    data: {
-        name: 'suggestions',
-        description: 'Creates a suggestion!',
-        options: [
-            {
-                name: 'message',
-                description: 'What is your suggestion?',
-                type: 3,
-                required: true
-            }
-        ]
-    },
+    options: [
+        {
+            name: 'message',
+            description: 'What is the suggestion?',
+            type: 3,
+            required: true
+        }
+    ],
+    botSpamOnly: 1,
     async execute(interaction){
-        const channel = interaction.guild.channels.cache.find(c => c.id === bot.suggestionsId); //test-2 channel ID 1029428940705632326 OR bot.suggestionsId
+        const serverConfig = getServerConfig(interaction.guild.id);
+        if (!serverConfig) {
+            return interaction.reply({ content: 'This command is not available in this server.', flags: Discord.MessageFlags.Ephemeral });
+        }
+        
+        const channel = interaction.guild.channels.cache.get(serverConfig.suggestionsChannelId);
         let messageArgs = interaction.options.getString('message');
         let newStatus = 'New Suggestion';
         let author = interaction.user.id || 'default value';
@@ -28,10 +32,10 @@ module.exports = {
         let avatar = interaction.user.displayAvatarURL();
 
         const initial = new Discord.EmbedBuilder()
-        .setColor(0xFADF2E)
+        .setColor(parseInt(embedConfig.teal_color, 16))
         .setAuthor({name: name, icon_url: avatar})
         .setDescription(messageArgs)
-        .setFooter({text: '📈 This suggestion currently needs votes and feedback. If you would like to discuss it, please visit the associated thread.'});
+        .setFooter({text: embedConfig.footertext, iconURL: embedConfig.footericon});
 
         interaction.client.users.cache.get(author).send({content: `Hey, ${interaction.user.username}! Thanks for submitting a suggestion! Our server needs to have time to vote on this. Once some time has passed, you can check the suggestion channel to check the updated status of your suggestion! We appreciate your feedback! Happy chatting!`});
 

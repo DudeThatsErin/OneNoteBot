@@ -1,30 +1,23 @@
-const Discord = require('discord.js');
-const config = require('../../config/config.json');
 const bot = require('../../config/bot.json');
-const owner = require('../../config/owner.json');
+const color = require('../../config/embed.json');
 
 module.exports = {
     name: 'about',
     description: 'Displays information about the bot.',
     usage: `/about`,
-    cooldown: 5,
-    
-    data: {
-        name: 'about',
-        description: 'Displays information about the bot.'
-    },
-    execute(interaction, client) {
+    botSpamOnly: 1,
+    execute(interaction) {
         let embed = {
-            color: 0xffffff,
-            title: `${bot.name}`,
+            color: color.blue_color,
+            title: bot.name,
             thumbnail: {
                 url: bot.avatar
             },
             description: `This is a bot made by Erin for Erin's Discord Server. You can find the source code [here](https://github.com/Dudethatserin/ErinHelperDiscordBot)`,
             timestamp: new Date(),
             footer: {
-                text: `Thanks for using ${bot.name}!`,
-                icon_url: bot.avatar
+                text: color.footertext,
+                icon_url: color.footericon
             }
         }
 

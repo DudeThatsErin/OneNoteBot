@@ -1,10 +1,16 @@
 /*
-  ErinHelperDiscordBot
-  USING DISCORD.JS V14.6.0+
+  OneNote Bot
+  Last Update: 2025-09-02
+
+$ npm list
+OneNoteBot@1.0.0 /var/www/OneNoteBot
+├── discord.js@14.22.1
+├── pm2@5.2.0
+└── sqlite3@5.1.7
 */
 const fs = require('fs');
 const { Client, GatewayIntentBits, Partials, Collection, REST } = require('discord.js');
-const config = require('./utils/config');
+const config = require('./config/config.json');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages ], partials: [Partials.Channel] });
 
 // Create a shared REST instance for the entire bot
@@ -12,7 +18,8 @@ const rest = new REST({ version: '10' }).setToken(config.token);
 
 // Set up rate limit event listener on the shared REST instance
 rest.on('rateLimited', (info) => {
-  console.log(`🚫 Rate limited! Timeout: ${info.timeout}ms, Limit: ${info.limit}, Method: ${info.method}, Path: ${info.route}`);
+  console.log('Rate limited!', info);
+  console.log(`🚫 Rate limited! Timeout: ${info.timeToReset}ms, Limit: ${info.limit}, Method: ${info.method}, Path: ${info.route}`);
 });
 
 // Attach the shared REST instance to the client immediately
@@ -51,7 +58,7 @@ function readFilesFromPath(pathString) {
 }
 
 console.log('|-----------------------------------|');
-console.log('       Loading ++prefix Commands... ');
+console.log('       Loading --prefix Commands... ');
 console.log('|-----------------------------------|');
 // Call the read files function with the root folder of the commands and
 // store all the file paths in the constant.

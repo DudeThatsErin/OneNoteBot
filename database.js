@@ -1,6 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-const config = require('./utils/config');
 
 // Use separate database for Discord bot
 const dbPath = path.join(__dirname, 'bot.db');

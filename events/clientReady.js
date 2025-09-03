@@ -1,7 +1,7 @@
-const { REST } = require('discord.js');
-const config = require('../utils/config');
+const config = require('../config/config.json');
+
 module.exports = {
-    name: 'ready',
+    name: 'clientReady',
     once: true,
     async execute(client) {
         
@@ -20,6 +20,7 @@ module.exports = {
             console.error('❌ No REST instance found! Check index.js initialization');
         }
         
+        console.log('|-----------------------------------|')
         console.log('             Error Logs...           ')
         console.log('|-----------------------------------|')
 

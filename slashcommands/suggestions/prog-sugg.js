@@ -76,7 +76,7 @@ module.exports = {
             const moderate = moder.tag || interaction.user.tag;
 
             const inprogress = new Discord.EmbedBuilder()
-                .setColor(0x004d4d)
+                .setColor(parseInt(embedConfig.teal_color, 16))
                 .setAuthor({name: name, iconURL: avatar})
                 .setDescription(suggestion)
                 .addFields(
@@ -86,7 +86,7 @@ module.exports = {
                 .setFooter({text: `If you would like to suggest something, use /suggestions`});
 
             const updated = new Discord.EmbedBuilder()
-                .setColor(0x3EA493)
+                .setColor(parseInt(embedConfig.turquoise_color, 16))
                 .setAuthor({name: name, iconURL: avatar})
                 .setDescription(suggestion)
                 .addFields(

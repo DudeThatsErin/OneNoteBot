@@ -1,5 +1,5 @@
-const config = require('../../config/config.json');
 const Discord = require('discord.js');
+const config = require('../../config/embed.json');
 const ee = require('../../config/embed.json');
 
 module.exports = {
@@ -7,14 +7,9 @@ module.exports = {
     description: 'Sends information about hosting providers.',
     usage: `/largehosting`,
     botSpamOnly: 1,
-    
-    data: {
-        name: 'largehosting',
-        description: 'Sends information about hosting providers.'
-    },
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
-            .setColor(0xD3D13F)
+            .setColor(parseInt(config.yellow_color, 16))
             .setTitle('There are many hosting providers for larger projects.')
             .addFields(
                 {

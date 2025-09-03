@@ -29,13 +29,13 @@ module.exports = {
                 new ButtonBuilder()
                     .setLabel('Discord Server')
                     .setStyle(5)
-                    .setURL(bot.server)
+                    .setURL(bot.inviteLink)
             );
 
         const dmEmbed = new EmbedBuilder()
-            .setColor(0x1e1b49)
+            .setColor(color.deep_purple_color)
             .setTitle(`You received a DM from Erin's Helper Bot`)
-            .setDescription(`${interaction.user} sent you the following message:\n\`\`\`${message}\`\`\`\n\nIf you have any questions, please send a message to <@455926927371534346>.`)
+            .setDescription(`${interaction.user} sent you the following message:\n\`\`\`${message}\`\`\`\n\nIf you have any questions, please send a message to <@575252669443211264>.`)
             .setTimestamp()
             .setFooter({ text: 'This is not an official warning.', iconURL: bot.avatar, timestamp: new Date() });
 

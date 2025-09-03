@@ -5,10 +5,6 @@ module.exports = {
     description: 'Get a random programming meme or funny text!',
     usage: `/meme`,
     botSpamOnly: 1,
-    data: {
-        name: 'meme',
-        description: 'Get a random programming meme or funny text!'
-    },
     async execute(interaction) {
         const memes = [
             "```\n// This code works, don't touch it\n// I have no idea why this works\n// But it does, so leave it alone\n```",
@@ -34,7 +30,7 @@ module.exports = {
         const memeImage = memeImages[Math.floor(Math.random() * memeImages.length)];
         
         const embed = new EmbedBuilder()
-            .setColor(0xFF6B35)
+            .setColor(parseInt(config.orange_color, 16))
             .setTitle('😂 Programming Meme')
             .setDescription(randomMeme)
             .setTimestamp()

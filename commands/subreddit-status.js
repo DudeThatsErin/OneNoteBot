@@ -2,10 +2,10 @@ const Discord = require('discord.js');
 const bot = require('../config/bot.json');
 const color = require('../config/embed.json');
 module.exports = {
-    name: 'bot-status',
-    description: 'Pushes an embed to display in the channel about a bot update.',
-    usage: `/bot-status <message>`,
-    ownerOnly: 1,
+    name: 'subreddit-status',
+    description: 'Pushes an embed to display in the channel about a subreddit update.',
+    usage: `/subreddit-status <message>`,
+    modOnly: 1,
     options: [
         {
             name: 'message',
@@ -23,18 +23,18 @@ module.exports = {
         }
 
         let embed = new Discord.EmbedBuilder()
-            .setColor(color.violet_color)
-            .setTitle('Bot Update!')
+            .setColor(color.purple_color)
+            .setTitle('Subreddit Update!')
             .setDescription(reason)
             .setTimestamp()
             .setFooter({text: 'Want to suggest a feature for the bot? Use /suggestions', iconURL: bot.avatar, timestamp: new Date()});
 
         try {
             await channel.send({ embeds: [embed] });
-            interaction.reply({ content: '✅ Bot status update sent!', flags: 64 });
+            interaction.reply({ content: '✅ Subreddit status update sent!', flags: 64 });
         } catch (error) {
-            console.error('Error sending bot status:', error);
-            interaction.reply({ content: '❌ Failed to send bot status update.', flags: 64 });
+            console.error('Error sending subreddit status:', error);
+            interaction.reply({ content: '❌ Failed to send subreddit status update.', flags: 64 });
         }
     }
 };

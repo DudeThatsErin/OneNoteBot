@@ -1,18 +1,14 @@
 const Discord = require('discord.js');
+const config = require('../../config/embed.json');
 const ee = require('../../config/embed.json');
 
 module.exports = {
     name: 'career',
     description: 'Allows users to get information on how to get careers in the IT field.',
     usage: `/career`,
-    
-    data: {
-        name: 'career',
-        description: 'Allows users to get information on how to get careers in the IT field.'
-    },
     execute(interaction) {
         let embed = new Discord.EmbedBuilder()
-            .setColor(0x1E3568)
+            .setColor(parseInt(config.dark_blue_color, 16))
             .setTitle('For a career or internship in computer programming or similar tech-related fields, consider some of the following websites...')
             .addFields(
                 {

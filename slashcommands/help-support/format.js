@@ -1,4 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require('discord.js');
+const config = require('../../config/embed.json');
 
 module.exports = {
     name: 'format',
@@ -28,7 +29,7 @@ module.exports = {
         const user = interaction.options.getUser('user') || interaction.user;
 
         const formatEmbed = new EmbedBuilder()
-            .setColor(0x7DBFBF)
+            .setColor(parseInt(config.teal_color, 16))
             .setTitle('Did you format your code?')
             .setDescription(`Please format your code using backticks. If you don't understand, we have an example below. Future code you share will be deleted until you format it.`)
             .addFields(

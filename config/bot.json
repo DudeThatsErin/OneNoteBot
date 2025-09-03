@@ -3,13 +3,35 @@
 	"name": "OneNote Bot",
 	"id": "838212312883396668",
 	"image": "https://www.usu.edu/teach/images/onenote-thumbnail.jpeg",
-	"avatar": "https://cdn.discordapp.com/avatars/838212312883396668/17787ee5bad8a7771b0e8d356267fec4?size=256",
+	"avatar": "https://erinskidds.com/bot/images/OneNote-1.png",
 	"uptime": "https://stats.uptimerobot.com/0pj23Sk01K",
-	"inviteLink": "COMING SOON",
+	"inviteLink": "https://discord.gg/5kv4bDUkpc",
 	"botInviteLink": "https://discord.com/oauth2/authorize?client_id=838212312883396668&permissions=8&integration_type=0&scope=bot+applications.commands",
 	"ownerID": "455926927371534346",
-	"onenoteServerId": "718253204147798047",
-	"myServerId": "718253204147798047",
-	"suggestionsId": "1406095003666612254",
-	"announcementsId": "1406098738178691224"
+	"defaultCooldown": 5,
+	"servers": {
+		"onenote": {
+			"id": "1117165020476883034",
+			"suggestionsChannelId": "1412471249275326599",
+			"announcementsChannelId": "1412473659762802810",
+			"botSpamChannelId": "1412283318266892359",
+			"modBotSpamChannelId": "1412283419525906543",
+			"modRoles": ["1117174939494142042", "1117199477267238942", "1117176299979538482"],
+			"modIDs": ["455926927371534346", "686027581958783212", "1118212136481595432"],
+			"generalCategoryID": "1117165020476883035",
+			"welcomeChannelId": "1117191099409256580",
+			"rulesChannelID": "1119154136789831680"
+		},
+		"mine": {
+			"id": "718253204147798047",
+			"suggestionsChannelId": "1406095003666612254",
+			"announcementsChannelId": "1406098738178691224",
+			"botSpamChannelId": "1406106241255866418",
+			"modBotSpamChannelId": "1406112392651210802",
+			"modRoles": ["718253309101867008"],
+			"modIDs": ["455926927371534346"],
+			"generalCategoryID": "989909861003325460",
+			"welcomeChannelId": "1406089587553468436"
+		}
+	}
 }

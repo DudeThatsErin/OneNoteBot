@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const config = require('../../config/embed.json');
 const connection = require('../../database.js');
 const bot = require('../../config/bot.json');
 
@@ -77,7 +78,7 @@ module.exports = {
         const moderate = moder.tag || interaction.user.tag;
         
         const denied = new Discord.EmbedBuilder()
-            .setColor(0xA4503E)
+            .setColor(parseInt(config.dark_red_color, 16))
             .setAuthor({ name: name, iconURL: avatar})
             .setDescription(suggestion)
             .addFields(

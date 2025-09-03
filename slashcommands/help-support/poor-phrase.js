@@ -4,11 +4,6 @@ module.exports = {
 	name: 'poorly-phrased',
 	description: 'Asks people to explain their questions better.',
 	usage: `/poorly-phrased`,
-	
-    data: {
-        name: 'poorly-phrased',
-        description: 'Asks people to explain their questions better.'
-    },
     execute(interaction) {
     const row = new ActionRowBuilder()
     .addComponents(

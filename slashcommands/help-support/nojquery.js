@@ -1,17 +1,13 @@
 const Discord = require('discord.js');
+const config = require('../../config/embed.json');
 
 module.exports = {
     name: 'nojquery',
     usage: `/nojquery`,
     description: 'Sends information on why JQuery isn’t used and is bad to use.',
-    
-    data: {
-        name: 'nojquery',
-        description: 'Sends information on why JQuery isn’t used and is bad to use.'
-    },
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
-            .setColor(0x474961)
+            .setColor(parseInt(config.indigo_color, 16))
             .setTitle('Avoid JQuery!!!')
             .addFields(
                 {

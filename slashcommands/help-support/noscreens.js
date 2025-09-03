@@ -1,17 +1,13 @@
 const Discord = require('discord.js');
+const config = require('../../config/embed.json');
 
 module.exports = {
     name: 'noscreens',
     usage: `/noscreens`,
     description: 'Sends information on why it is best to avoid sending screenshots of your code.',
-    
-    data: {
-        name: 'noscreens',
-        description: 'Sends information on why it is best to avoid sending screenshots of your code.'
-    },
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
-            .setColor(0xCA3FD3)
+            .setColor(parseInt(config.magenta_color, 16))
             .setTitle('⚠️ Avoid Sending Screenshots please!')
             .setDescription(`Please **do not screenshot code** as it causes a number of issues...`)
             .addFields(

@@ -5,18 +5,15 @@ module.exports = {
     usage: `/thanks <@username or ID>`,
     example: `/thanks @username`,
     description: 'Allows our users to thank other members for their help.',
-    data: {
-        name: 'thanks',
-        description: 'Allows our users to thank other members for their help.',
-        options: [
-            {
-                name: 'user',
-                description: 'Who would you like to thank?',
-                required: true,
-                type: 6
-            }
-        ]
-    },
+    botSpamOnly: 1,
+    options: [
+        {
+            name: 'user',
+            description: 'User to thank',
+            type: 6,
+            required: true
+        }
+    ],
     async execute(interaction, client) {
         const mention = interaction.options.getUser('user');
         const thankee = mention.id;

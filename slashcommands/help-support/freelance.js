@@ -1,18 +1,14 @@
 const Discord = require('discord.js');
+const config = require('../../config/embed.json');
 const ee = require('../../config/embed.json');
 
 module.exports = {
     name: 'freelance',
     description: 'Allows users to get information on how to self employment or freelancing.',
     usage: `/freelance`,
-    
-    data: {
-        name: 'freelance',
-        description: 'Allows users to get information on how to self employment or freelancing.'
-    },
     execute(interaction) {
         let embed = new Discord.EmbedBuilder()
-            .setColor(0x497AEC)
+            .setColor(parseInt(config.blue_color, 16))
             .setTitle('For freelancing jobs, consider some of the following websites...')
             .addFields(
                 {

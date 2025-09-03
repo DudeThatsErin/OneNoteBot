@@ -1,15 +1,11 @@
 const { EmbedBuilder } = require('discord.js');
+const config = require('../../config/embed.json');
 
 module.exports = {
     name: 'riddle',
     description: 'Get a brain-teasing riddle to solve!',
     usage: `/riddle`,
     botSpamOnly: 1,
-    
-    data: {
-        name: 'riddle',
-        description: 'Get a brain-teasing riddle to solve!'
-    },
     execute(interaction) {
         const riddles = [
             { question: "I speak without a mouth and hear without ears. I have no body, but come alive with wind. What am I?", answer: "An echo" },
@@ -32,7 +28,7 @@ module.exports = {
         const randomRiddle = riddles[Math.floor(Math.random() * riddles.length)];
         
         const embed = new EmbedBuilder()
-            .setColor(0x8E44AD)
+            .setColor(parseInt(config.turquoise_color, 16))
             .setTitle('🧩 Riddle Time!')
             .setDescription(randomRiddle.question)
             .addFields({ name: 'Think you know?', value: 'Reply with your answer! (The answer is hidden below)' })
@@ -44,7 +40,7 @@ module.exports = {
             // Send the answer in a follow-up after 30 seconds
             setTimeout(() => {
                 const answerEmbed = new EmbedBuilder()
-                    .setColor(0x27AE60)
+                    .setColor(parseInt(config.magenta_color, 16))
                     .setTitle('💡 Answer')
                     .setDescription(`**${randomRiddle.answer}**`)
                     .setFooter({ text: 'Did you get it right?' });

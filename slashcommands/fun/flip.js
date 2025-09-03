@@ -3,11 +3,6 @@ module.exports = {
 	description: 'Flips a coin for heads or tails',
 	usage: `/coinflip`,
 	botSpamOnly: 1,
-	
-    data: {
-        name: 'coinflip',
-        description: 'Flips a coin for heads or tails'
-    },
     execute(interaction) {
     function doRand() {
       const rand = ['HEADS!', 'TAILS!'];

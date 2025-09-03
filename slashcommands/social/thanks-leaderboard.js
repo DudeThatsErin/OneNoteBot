@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const config = require('../../config/embed.json');
 const connection = require('../../database.js');
 
 module.exports = {
@@ -42,7 +43,7 @@ module.exports = {
 
             let embed = new Discord.EmbedBuilder()
                 .setTitle('Thanks Leaderboard')
-                .setColor(0xc9ca66)
+                .setColor(parseInt(config.gold_color, 16))
                 .addFields(
                     [{name: `Top 10`, value: userNames, inline: true},
                     {name: 'Thanks', value: points, inline: true},

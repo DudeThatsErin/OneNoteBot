@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const o = require('../config/owner.json');
-
+const bot = require('../config/bot.json');
 module.exports = {
     name: 'interactionCreate',
     async execute(interaction, client) {
@@ -17,7 +17,7 @@ module.exports = {
         }
 
         //mod only
-        const modRoles = ['718253309101867008'];
+        const modRoles = [...bot.servers.onenote.modRoles, ...bot.servers.mine.modRoles];
         let value = 0;
         if (command.modOnly === 1) {
             for (const ID of modRoles) {
@@ -26,13 +26,13 @@ module.exports = {
                 }
 
                 if (value == modRoles.length) {
-                    return interaction.reply({ content: `This is a command only moderators can use. You do not have the required permissions. Moderators have the \`@Moderator\` role.`, flags: Discord.MessageFlags.Ephemeral });
+                    return interaction.reply({ content: `This is a command only moderators can use. You do not have the required permissions. Moderators have the \`<@${modRoles[0]}>\` role.`, flags: Discord.MessageFlags.Ephemeral });
                 }
             }
         }
 
         // botspam channel only
-        const botspam = [`1406106241255866418`, `1406112392651210802`];
+        const botspam = [bot.servers.onenote.botSpamChannelId, bot.servers.mine.botSpamChannelId, bot.servers.onenote.modBotSpamChannelId, bot.servers.mine.modBotSpamChannelId];
         if (command.botSpamOnly === 1) {
             if (!botspam.includes(interaction.channel.id)) {
                 return interaction.reply({ content: `Please only use this command in the <#${botspam[0]}> channel. This command cannot be used elsewhere. Thank you.`, flags: Discord.MessageFlags.Ephemeral })
@@ -46,7 +46,7 @@ module.exports = {
 
         const now = Date.now();
         const timestamps = client.slashCooldowns.get(interaction.commandName);
-        const cooldownAmount = (command.cooldown || 1) * 1000;
+        const cooldownAmount = (command.cooldown || bot.defaultCooldown) * 1000;
         if (timestamps.has(interaction.user.id)) {
             const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
 
@@ -89,7 +89,7 @@ module.exports = {
                         value: `I have pinged Erin so this has already been reported to her. You do not need to do anything else.`
                     })
                     .setTimestamp()
-                    .setFooter({ text: `Thanks for using ${client.user.tag}! I'm sorry you encountered this error!`, icon_url: `${client.user.displayAvatarURL()}` });
+                    .setFooter({ text: `Thanks for using ${client.user.tag}! I'm sorry you encountered this error!`, icon_url: `${client.user.displayAvatarURL()}`, timestamp: new Date() });
                 
                 // Try to reply, but catch any additional errors
                 if (!interaction.replied && !interaction.deferred) {

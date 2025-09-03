@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const color = require('../../config/embed.json');
 
 module.exports = {
     name: 'avatar',
@@ -6,24 +7,20 @@ module.exports = {
     usage: `/avatar or /avatar [other person\'s username]`,
     example: `/avatar or /avatar @DudeThatsErin`,
     botSpamOnly: 1,
-    data: {
-        name: 'avatar',
-        description: 'Displays a user\'s profile picture as well as links to view them in JPEG, PNG, and WEBP.',
-        options: [
-            {
-                name: 'user',
-                description: 'Who\'s avatar would you like to see?',
-                required: false,
-                type: 6
-            }
-        ]
-    },
+    options: [
+        {
+            name: 'user',
+            description: 'Who\'s avatar would you like to see?',
+            required: false,
+            type: 6
+        }
+    ],
     execute(interaction) {
 
         const person = interaction.options.getUser('user');
 
         const myEmbed = new EmbedBuilder()
-            .setColor(0x38A6BC)
+            .setColor(parseInt(color.blue_color, 16))
             .setTitle('Your Avatar')
             .addFields(
                 {
@@ -46,7 +43,7 @@ module.exports = {
         if(!person) return interaction.reply({ embeds: [myEmbed], flags: 64 });
 
         const theirEmbed = new EmbedBuilder()
-            .setColor(0x38A6BC)
+            .setColor(parseInt(color.blue_color, 16))
             .setTitle(`${person.username}'s Avatar`)
             .addFields(
                 {

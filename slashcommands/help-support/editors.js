@@ -1,17 +1,13 @@
 const Discord = require('discord.js');
+const config = require('../../config/embed.json');
 
 module.exports = {
     name: 'editors',
     description: 'Sends information on commonly used IDEs or Text Editors.',
     usage: `/editors`,
-    
-    data: {
-        name: 'editors',
-        description: 'Sends information on commonly used IDEs or Text Editors.'
-    },
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
-            .setColor(0xB87364)
+            .setColor(parseInt(config.brown_color, 16))
             .setTitle('This is a list of the most commonly used IDEs or Text Editors...')
             .setDescription('This is not an exhaustive list. You can see an exhaustive list on our knowledgebase: https://codinghelp.site')
             .addFields(

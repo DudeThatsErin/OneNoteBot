@@ -1,22 +1,19 @@
 const { EmbedBuilder } = require('discord.js');
+const config = require('../../config/embed.json');
 
 module.exports = {
     name: 'choose',
     description: 'Can\'t decide? Let me choose for you!',
     usage: `/choose [options separated by commas]`,
     botSpamOnly: 1,
-    data: {
-        name: 'choose',
-        description: 'Can\'t decide? Let me choose for you!',
-        options: [
-            {
-                name: 'options',
-                description: 'Options to choose from (separate with commas)',
-                type: 3,
-                required: true
-            }
-        ]
-    },
+    options: [
+        {
+            name: 'options',
+            description: 'Options to choose from (separated by commas)',
+            type: 3,
+            required: true
+        }
+    ],
     execute(interaction) {
         const input = interaction.options.getString('options');
         const choices = input.split(',').map(choice => choice.trim()).filter(choice => choice.length > 0);
@@ -32,7 +29,7 @@ module.exports = {
         const randomChoice = choices[Math.floor(Math.random() * choices.length)];
         
         const embed = new EmbedBuilder()
-            .setColor(0x9B59B6)
+            .setColor(parseInt(config.purple_color, 16))
             .setTitle('🤔 Decision Maker')
             .addFields(
                 { name: 'Your Options:', value: choices.join(', ') },

@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
+const embedConfig = require('../../config/embed.json');
 const bot = require('../../config/bot.json');
 
 module.exports = {
@@ -70,7 +71,7 @@ module.exports = {
         const status = result7[0][0].stat;
 
         const initial = new Discord.EmbedBuilder()
-        .setColor(0x771C73)
+        .setColor(parseInt(embedConfig.blue_color, 16))
         .setAuthor({name: name, iconURL: avatar})
         .setDescription(suggestion)
         .addFields(

@@ -1,14 +1,11 @@
 const { EmbedBuilder } = require('discord.js');
+const embedConfig = require('../../config/embed.json');
 
 module.exports = {
     name: 'joke',
     description: 'Get a random programming or general joke!',
     usage: `/joke`,
     botSpamOnly: 1,
-    data: {
-        name: 'joke',
-        description: 'Get a random programming or general joke!'
-    },
     async execute(interaction) {
         const jokes = [
             "Why do programmers prefer dark mode? Because light attracts bugs!",
@@ -32,22 +29,43 @@ module.exports = {
         
         // Get a random joke image from curated collection
         const jokeImages = [
-            'https://i.postimg.cc/6qYJxLhY/joke1.png',
-            'https://i.postimg.cc/Nf8qxK2L/joke2.png',
-            'https://i.postimg.cc/GmXvN4Qh/joke3.png'
+            'https://erinskidds.com/bot/images/jokes/another_app.jpg',
+            'https://erinskidds.com/bot/images/jokes/bartinder.jpg',
+            'https://erinskidds.com/bot/images/jokes/bulldozer.jpg',
+            'https://erinskidds.com/bot/images/jokes/clean-robber.jpg',
+            'https://erinskidds.com/bot/images/jokes/dad_calls.jpg',
+            'https://erinskidds.com/bot/images/jokes/date_mom.jpg',
+            'https://erinskidds.com/bot/images/jokes/flushme.png',
+            'https://erinskidds.com/bot/images/jokes/funny-dating-app-memes-17.jpg',
+            'https://erinskidds.com/bot/images/jokes/fur-rari.webp',
+            'https://erinskidds.com/bot/images/jokes/husky.jpg',
+            'https://erinskidds.com/bot/images/jokes/pork-chop.jpg',
+            'https://erinskidds.com/bot/images/jokes/pumpkin-patch.jpg',
+            'https://erinskidds.com/bot/images/jokes/pupcakes.jpg',
+            'https://erinskidds.com/bot/images/jokes/spot.jpg',
+            'https://erinskidds.com/bot/images/jokes/too-many-apps.jpg',
+            'https://erinskidds.com/bot/images/jokes/watch-dog.webp',
+            'https://erinskidds.com/bot/images/jokes/waved.jpg',
+            'https://erinskidds.com/bot/images/jokes/witch-itch.webp'
         ];
-        const jokeImage = jokeImages[Math.floor(Math.random() * jokeImages.length)];
         
-        const embed = new EmbedBuilder()
-            .setColor(0xFFA500)
-            .setTitle('😂 Random Joke')
-            .setDescription(randomJoke)
-            .setTimestamp()
-            .setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() });
+        // Randomly choose between text joke or image joke
+        const useImage = Math.random() < 0.5;
         
-        // Set thumbnail with curated joke image
-        embed.setThumbnail(jokeImage);
-        
-        interaction.reply({ embeds: [embed], flags: 64 });
+        if (useImage) {
+            // Send a random joke image
+            const jokeImage = jokeImages[Math.floor(Math.random() * jokeImages.length)];
+            interaction.reply({ content: jokeImage });
+        } else {
+            // Send a text joke embed
+            const embed = new EmbedBuilder()
+                .setColor(parseInt(embedConfig.orange_color, 16))
+                .setTitle('😂 Random Joke')
+                .setDescription(randomJoke)
+                .setTimestamp()
+                .setFooter({ text: embedConfig.footertext, iconURL: embedConfig.footericon });
+            
+            interaction.reply({ embeds: [embed] });
+        }
     }
 };

@@ -1,11 +1,12 @@
 const Discord = require('discord.js');
 const bot = require('../config/bot.json');
+const color = require('../config/embed.json');
 
 module.exports = {
     name: 'server-status',
     description: 'Pushes an embed to display in the channel about a server update.',
     usage: `/server-status <message>`,
-    ownerOnly: 1,
+    modOnly: 1,
     options: [
         {
             name: 'message',
@@ -23,7 +24,7 @@ module.exports = {
         }
 
         let embed = new Discord.EmbedBuilder()
-            .setColor(0xFF6B35)
+            .setColor(color.navy_color)
             .setTitle('Server Update!')
             .setDescription(reason)
             .setTimestamp()

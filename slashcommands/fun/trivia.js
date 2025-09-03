@@ -1,15 +1,11 @@
 const { EmbedBuilder } = require('discord.js');
+const config = require('../../config/embed.json');
 
 module.exports = {
     name: 'trivia',
     description: 'Test your knowledge with a random trivia question!',
     usage: `/trivia`,
     botSpamOnly: 1,
-    
-    data: {
-        name: 'trivia',
-        description: 'Test your knowledge with a random trivia question!'
-    },
     execute(interaction) {
         const triviaQuestions = [
             { question: "What is the capital of Australia?", options: ["Sydney", "Melbourne", "Canberra", "Perth"], answer: "Canberra" },
@@ -48,7 +44,7 @@ module.exports = {
         const shuffledOptions = [...randomTrivia.options].sort(() => Math.random() - 0.5);
         
         const embed = new EmbedBuilder()
-            .setColor(0xE74C3C)
+            .setColor(parseInt(config.pink_color, 16))
             .setTitle('🧠 Trivia Question')
             .setDescription(randomTrivia.question)
             .addFields({ name: 'Options:', value: shuffledOptions.map((option, index) => `${index + 1}. ${option}`).join('\n') })
@@ -58,7 +54,7 @@ module.exports = {
         interaction.reply({ embeds: [embed], flags: 64 }).then(() => {
             setTimeout(() => {
                 const answerEmbed = new EmbedBuilder()
-                    .setColor(0x27AE60)
+                    .setColor(parseInt(config.dark_green_color, 16))
                     .setTitle('✅ Correct Answer')
                     .setDescription(`**${randomTrivia.answer}**`)
                     .setFooter({ text: 'How did you do?' });

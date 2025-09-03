@@ -66,7 +66,7 @@ module.exports = {
         const upStatus = result8[0][0].Message;
 
         const edited = new Discord.EmbedBuilder()
-            .setColor(0x1C3D77)
+            .setColor(parseInt(embedConfig.deep_purple_color, 16))
             .setAuthor({name: author, iconURL: avatar})
             .setDescription('Your suggestion has been updated!')
             .addFields(
@@ -78,7 +78,7 @@ module.exports = {
         interaction.user.send({ embeds: [edited] });
 
         const editedTwo = new Discord.EmbedBuilder()
-            .setColor(0x004d4d)
+            .setColor(parseInt(embedConfig.teal_color, 16))
             .setAuthor({name: author, iconURL: avatar})
             .setDescription(upStatus)
             .setFooter({text:'If you are interested in submitting a suggestion please use: h!suggestion'});

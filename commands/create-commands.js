@@ -1,4 +1,3 @@
-require('dotenv').config();
 const fs = require('fs');
 const { REST, Routes } = require('discord.js');
 const bot = require('../config/bot.json');
@@ -98,30 +97,29 @@ module.exports = {
       console.log(`\n🔄 Started refreshing ${commands.length} application (/) commands.`);
 
       // Debug: Log the commands being sent to identify malformed ones
-      console.log('Commands being deployed:');
-      commands.forEach((cmd, index) => {
-        console.log(`${index}: ${cmd.name} - Options:`, cmd.options ? JSON.stringify(cmd.options, null, 2) : 'None');
-      });
+      // console.log('Commands being deployed:');
+      // commands.forEach((cmd, index) => {
+      //   console.log(`${index}: ${cmd.name} - Options:`, cmd.options ? JSON.stringify(cmd.options, null, 2) : 'None');
+      // });
 
-      // Deploy commands to Discord
+      // Deploy commands to My Discord
       const data = await rest.put(
-        Routes.applicationGuildCommands(bot.id, bot.myServerId),
+        Routes.applicationGuildCommands(bot.id, bot.servers.mine.id),
         { body: commands },
       );
 
-      // TO DO: REMOVE THIS WHEN IT IS IN THAT SERVER
-      // Deploy commands to Discord
-      // const data2 = await rest.put(
-      //   Routes.applicationGuildCommands(bot.id, bot.oneNoteServerId),
-      //   { body: commands },
-      // );
+      // Deploy commands to OneNote Discord
+      const data2 = await rest.put(
+        Routes.applicationGuildCommands(bot.id, bot.servers.onenote.id),
+        { body: commands },
+      );
 
 
-      console.log('data result: ', data);
+      // console.log('data result: ', data);
       // console.log('data2 result: ', data2);
 
-      console.log(`✅ Successfully reloaded ${data.length} application (/) commands.`);
-      message.reply(`✅ Successfully deployed ${data.length} slash commands!`);
+      console.log(`✅ Successfully reloaded ${data.length} & ${data2.length} application (/) commands.`);
+      message.reply(`✅ Successfully deployed ${data.length} & ${data2.length} slash commands!`);
 
     } catch (error) {
       console.error('❌ Command deployment error:', error);

@@ -1,12 +1,10 @@
-require('dotenv').config();
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const bot = require('../config/bot.json');
-const config = require('../utils/config');
 
 module.exports = {
   name: 'deletecommands',
-  aliases: ['endslash', 'delete-commands'],
+  aliases: ['endslash', 'delete-commands', 'dc'],
   description: 'Allows Erin to delete the Slash Commands.',
   ownerOnly: 1,
   execute(message, client) {
@@ -22,17 +20,17 @@ module.exports = {
 
           //console.log('client ', message.client.slashCommands)
 
-            // Delete guild commands
+            // Delete My guild commands
             await rest.put(
-                Routes.applicationGuildCommands(bot.id, bot.serverId),
+                Routes.applicationGuildCommands(bot.id, bot.servers.mine.id),
                 { body: [] },
             );
 
-            // Delete global commands
+            // Delete OneNote guild commands 
             await rest.put(
-                Routes.applicationCommands(bot.id),
-                { body: [] },
-            );
+              Routes.applicationGuildCommands(bot.id, bot.servers.onenote.id),
+              { body: [] },
+          );
 
             message.reply('Successfully deleted all slash commands!');
 

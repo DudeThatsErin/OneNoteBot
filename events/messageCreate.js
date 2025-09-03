@@ -1,6 +1,7 @@
 const me = require('../config/owner.json');
 const Discord = require('discord.js');
-const config = require('../utils/config');
+const bot = require('../config/bot.json');
+const config = require('../config/config.json');
 
 module.exports = {
     name: 'messageCreate',
@@ -35,11 +36,11 @@ module.exports = {
         }
 
 
-        const modRoles = ['718253309101867008'];
-        const modIDs = ['455926927371534346'];
+        const modRoles = [...bot.servers.onenote.modRoles, ...bot.servers.mine.modRoles];
+        const modIDs = [...bot.servers.onenote.modIDs, ...bot.servers.mine.modIDs];
         const isMod = modIDs.reduce((alrdyGod, crr) => alrdyGod || message.content.toLowerCase().split(' ').includes(crr), false);
         let value = 0;
-        if (message.channel.parentID === '382210817636040706') {
+        if (message.channel.parentID === bot.servers.onenote.modBotSpamChannelId || message.channel.parentID === bot.servers.mine.modBotSpamChannelId) {
             for (const ID of modRoles) {
                 if (!message.member.roles.cache.has(ID)) {
                     value++
@@ -60,7 +61,7 @@ module.exports = {
 
                 if (value == modRoles.length) {
                     message.react('❌');
-                    message.reply({ content: `This is a command only moderators can use. You do not have the required permissions. Moderators have the \`@Team\` role.` });
+                    message.reply({ content: `This is a command only moderators can use. You do not have the required permissions. Moderators have the \`<@${modRoles[0]}\>\` role.` });
                     return;
                 }
             }
@@ -73,7 +74,7 @@ module.exports = {
 
         const now = Date.now();
         const timestamps = client.cooldowns.get(command.name);
-        const cooldownAmount = (command.cooldown || 1) * 1000;
+        const cooldownAmount = (command.cooldown || bot.defaultCooldown) * 1000;
 
         if (timestamps.has(message.author.id)) {
             const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
@@ -108,7 +109,8 @@ module.exports = {
                 timestamp: new Date(),
                 footer: {
                     text: `Thanks for using ${client.user.tag}! I'm sorry you encountered this error!`,
-                    icon_url: `${client.user.displayAvatarURL()}`
+                    icon_url: `${client.user.displayAvatarURL()}`,
+                    timestamp: new Date()
                 }
             };
             message.channel.send({ embeds: [embed] });

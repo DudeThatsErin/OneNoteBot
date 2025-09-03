@@ -1,17 +1,13 @@
 const Discord = require('discord.js');
+const config = require('../../config/embed.json');
 
 module.exports = {
     name: 'dom-listening',
     usage: `/dom-listening`,
     description: 'Sends information about why not to use dom listening attributes/properties.',
-    
-    data: {
-        name: 'dom-listening',
-        description: 'Sends information about why not to use dom listening attributes/properties.'
-    },
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
-            .setColor(0xEC4E49)
+            .setColor(parseInt(config.red_color, 16))
             .setTitle('Never use the \`on*\` DOM attributes/properties.')
             .addFields(
                 {

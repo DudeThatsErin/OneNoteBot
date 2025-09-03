@@ -1,7 +1,5 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, DiscordAPIError } = require("discord.js");
+const Discord = require("discord.js");
 const ee = require('../../config/embed.json');
-const { ButtonPaginator } = require('@psibean/discord.js-pagination');
-const Discord = require('discord.js');
 
 module.exports = {
 	name: 'help',
@@ -15,24 +13,20 @@ module.exports = {
 		}
 	],
 	usage: '/help or /help [command name here]',
-	async execute(interaction, client) {
-		const pages = [];
-		const roleColor = 0x008080;
-
+	botSpamOnly: 1,
+	async execute(interaction) {
 		const createCommandHelpEmbed = ({
-			roleColor,
 			title,
-			description = `These are all of the commands QuartzNotes can do. If you want to get more information you can do \`/help <command>\`.`,
+			description = `These are all of the commands the OneNote bot can do. If you want to get more information you can do \`/help <command>\`.`,
 			fields }) => {
-				return new EmbedBuilder()
-					.setColor(roleColor)
+				return new Discord.EmbedBuilder()
+					.setColor(parseInt(ee.light_green_color, 16))
 					.setTitle(title)
 					.setDescription(description)
 					.addFields(fields)
 			};
 
 		const embed1 = createCommandHelpEmbed({
-			roleColor,
 			title: 'Help Menu - General Commands',
 			fields: [
 				{
@@ -43,7 +37,6 @@ module.exports = {
 		});
 
 		const embed2 = createCommandHelpEmbed({
-			roleColor,
 			title: 'Help Menu - Fun Commands',
 			fields: [
 				{
@@ -54,7 +47,6 @@ module.exports = {
 		});
 
 		const embed3 = createCommandHelpEmbed({
-			roleColor,
 			title: 'Help Menu - Message Issue Commands',
 			fields: [
 				{
@@ -65,7 +57,6 @@ module.exports = {
 		});
 
 		const embed4 = createCommandHelpEmbed({
-			roleColor,
 			title: 'Help Menu - Thanks System',
 			fields: [
 				{
@@ -76,7 +67,6 @@ module.exports = {
 		});
 
 		const embed5 = createCommandHelpEmbed({
-			roleColor,
 			title: 'Help Menu - Suggestion System',
 			fields: [
 				{
@@ -86,19 +76,6 @@ module.exports = {
 			]
 		});
 
-		const embed6 = createCommandHelpEmbed({
-			roleColor,
-			title: 'Help Menu - Admin Commands',
-			fields: [
-				{
-					name: 'Commands only Erin can use',
-					value: '```css\naccess\naccess-two\nboosters\nwelcome\nserver-rules\nbot-status\nserver-status\nsite-status\nsub-status\ndm\ncreatecommands\ndeletecommands\n```'
-				}
-			]
-		});
-
-		pages.push([embed1, embed2, embed3, embed4, embed5, embed6]);
-
 		let cmdd = interaction.options.getString('commandname');
 		//console.log('cmdd',cmdd)
 
@@ -106,10 +83,10 @@ module.exports = {
 
 			const cmd = client.slashCommands.get(cmdd) || client.commands.get(cmdd) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(cmdd));
 			//console.log('cmd ',cmd)
-			if (!cmd) return interaction.reply({ content: "That command could not be found!", ephemeral: true });
+			if (!cmd) return interaction.reply({ content: "That command could not be found!", flags: Discord.MessageFlags.Ephemeral });
 
-			const emb = new EmbedBuilder()
-				.setColor(roleColor)
+			const emb = new Discord.EmbedBuilder()
+				.setColor(parseInt(ee.light_green_color, 16))
 				.setTitle(`Help for \`${cmd.name}\``);
 			if (cmd.description) {
 				emb.setDescription(cmd.description);
@@ -148,10 +125,7 @@ module.exports = {
 			interaction.reply({ embeds: [emb], flags: Discord.MessageFlags.Ephemeral })
 
 		} else {
-			//  const buttonPaginator = new ButtonPaginator(interaction, { pages });
-			//  await buttonPaginator.send();
-
-			interaction.reply({ content: `Here are the available commands for Erin's Helper Bot.`, flags: Discord.MessageFlags.Ephemeral})
+			interaction.reply({ content: `Here are the available commands for the OneNote bot.`, embeds: [embed1, embed2, embed3, embed4, embed5], flags: Discord.MessageFlags.Ephemeral})
 		}
 
 	},

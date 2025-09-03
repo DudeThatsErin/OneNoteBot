@@ -4,35 +4,41 @@ const axios = require('axios');
 
 // Function to get random character images with fallback system
 function getRandomCharacterImage(characterName) {
-    // Curated image arrays for each character (reliable sources)
+    // Curated image arrays for each character (local images)
     const characterImages = {
         'SpongeBob': [
-            'https://i.postimg.cc/6qYJxLhY/spongebob1.png',
-            'https://i.postimg.cc/Nf8qxK2L/spongebob2.png',
-            'https://i.postimg.cc/GmXvN4Qh/spongebob3.png'
+            'https://erinskidds.com/bot/images/spongebob/spongebob-1.webp',
+            'https://erinskidds.com/bot/images/spongebob/spongebob-2.png',
+            'https://erinskidds.com/bot/images/spongebob/spongebob-3.jpg',
+            'https://erinskidds.com/bot/images/spongebob/spongebob-4.webp',
+            'https://erinskidds.com/bot/images/spongebob/spongebob-5.webp'
         ],
         'Patrick': [
-            'https://i.postimg.cc/L5YvZqxP/patrick1.png',
-            'https://i.postimg.cc/9f8KqL2M/patrick2.png',
-            'https://i.postimg.cc/QxRvN4Gh/patrick3.png'
+            'https://erinskidds.com/bot/images/spongebob/pat-2.webp',
+            'https://erinskidds.com/bot/images/spongebob/pat-3.jpg',
+            'https://erinskidds.com/bot/images/spongebob/pat-4.jpg',
+            'https://erinskidds.com/bot/images/spongebob/pat-5.webp'
         ],
         'Squidward': [
-            'https://i.postimg.cc/8CYvZqxP/squidward1.png',
-            'https://i.postimg.cc/Nf8qxK2L/squidward2.png',
-            'https://i.postimg.cc/GmXvN4Qh/squidward3.png'
+            'https://erinskidds.com/bot/images/spongebob/squidward-1.jpg',
+            'https://erinskidds.com/bot/images/spongebob/squidward-2.jpg',
+            'https://erinskidds.com/bot/images/spongebob/squidward-3.webp',
+            'https://erinskidds.com/bot/images/spongebob/squidward-5.jpg'
         ],
         'Mr. Krabs': [
-            'https://i.postimg.cc/L5YvZqxP/krabs1.png',
-            'https://i.postimg.cc/9f8KqL2M/krabs2.png',
-            'https://i.postimg.cc/QxRvN4Gh/krabs3.png'
+            'https://erinskidds.com/bot/images/spongebob/krabs-1.webp',
+            'https://erinskidds.com/bot/images/spongebob/krabs-2.webp',
+            'https://erinskidds.com/bot/images/spongebob/krabs-4.webp',
+            'https://erinskidds.com/bot/images/spongebob/krabs-5.jpg'
         ],
         'Sandy': [
-            'https://i.postimg.cc/8CYvZqxP/sandy1.png',
-            'https://i.postimg.cc/Nf8qxK2L/sandy2.png',
-            'https://i.postimg.cc/GmXvN4Qh/sandy3.png'
+            'https://erinskidds.com/bot/images/spongebob/sandy-1.jpg',
+            'https://erinskidds.com/bot/images/spongebob/sandy-3.jpg',
+            'https://erinskidds.com/bot/images/spongebob/sandy-4.webp',
+            'https://erinskidds.com/bot/images/spongebob/sandy-5.jpg'
         ],
         'Mr. Smitty Werbenjagermanjensen': [
-            'https://i.postimg.cc/6qYJxLhY/spongebob1.png' // Use SpongeBob image as fallback
+            'https://erinskidds.com/bot/images/spongebob/number-1.webp'
         ]
     };
     
@@ -43,7 +49,7 @@ function getRandomCharacterImage(characterName) {
     }
     
     // Default SpongeBob image if character not found
-    return 'https://i.postimg.cc/6qYJxLhY/spongebob1.png';
+    return 'https://erinskidds.com/bot/images/spongebob/spongebob-1.webp';
 }
 
 module.exports = {
@@ -51,10 +57,6 @@ module.exports = {
     description: 'Get a random SpongeBob SquarePants quote with character image!',
     usage: '/spongebob',
     cooldown: 3,
-    data: {
-        name: 'spongebob',
-        description: 'Get a random SpongeBob SquarePants quote with character image!'
-    },
     async execute(interaction) {
         const quotes = [
             // SpongeBob Quotes
@@ -216,8 +218,7 @@ module.exports = {
             .setTitle(`${randomQuote.character} says:`)
             .setDescription(`"${randomQuote.quote}"`)
             .setFooter({ 
-                text: `SpongeBob SquarePants Quote #${Math.floor(Math.random() * 1000) + 1}`, 
-                iconURL: ee.footericon 
+                text: `SpongeBob SquarePants Quote #${Math.floor(Math.random() * 1000) + 1}`
             })
             .setTimestamp();
 

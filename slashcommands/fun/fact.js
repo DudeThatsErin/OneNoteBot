@@ -5,10 +5,6 @@ module.exports = {
     description: 'Get a random fun or interesting fact!',
     usage: `/fact`,
     botSpamOnly: 1,
-    data: {
-        name: 'fact',
-        description: 'Get a random fun or interesting fact!'
-    },
     async execute(interaction) {
         const facts = [
             "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly edible!",
@@ -44,7 +40,7 @@ module.exports = {
         const factImage = factImages[Math.floor(Math.random() * factImages.length)];
         
         const embed = new EmbedBuilder()
-            .setColor(0x3498DB)
+            .setColor(parseInt(config.blue_color, 16))
             .setTitle('🧠 Random Fact')
             .setDescription(randomFact)
             .setTimestamp()

@@ -292,5 +292,12 @@
     "aliases": [],
     "usage": "/ping",
     "example": "/ping"
+  },
+  {
+    "name": "wiki",
+    "description": "Links to our wiki",
+    "aliases": [],
+    "usage": "/wiki",
+    "example": "/wiki"
   }
 ]

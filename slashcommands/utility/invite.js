@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const bot = require('../../config/bot.json');
 
 module.exports = {
     name: 'invite',
@@ -6,6 +6,6 @@ module.exports = {
     usage: `/invite`,
     botSpamOnly: 1,
     execute(interaction) {  
-        interaction.reply({ content: 'So, you want to invite someone to our server? Use this link: https://discord.gg/XcJWhE3SEA\nHere is one that is easy to copy:\n\`\`\`https://discord.gg/XcJWhE3SEA\`\`\`', flags: 64});
+        interaction.reply({ content: `So, you want to invite someone to our server? Use this link: ${bot.inviteLink}\nHere is one that is easy to copy:\n\`\`\`${bot.inviteLink}\`\`\``, flags: 64});
     },
   };

@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const bot = require('../config/bot.json');
 const color = require('../config/embed.json');
+const { getServerConfig } = require('../utils/serverConfig');
 module.exports = {
     name: 'bot-status',
     description: 'Pushes an embed to display in the channel about a bot update.',
@@ -14,16 +15,21 @@ module.exports = {
             required: true
         }
     ],
-    async execute(interaction, client) {
-        const channel = client.channels.cache.get(bot.announcementsId);
-        const reason = interaction.options.getString('message');
+    async execute(message, args, client) {
+        const serverConfig = getServerConfig(message.guild.id);
+        if (!serverConfig) {
+            return message.reply({ content: 'This command is not configured for this server.' });
+        }
+
+        const channel = client.channels.cache.get(serverConfig.announcementsChannelId);
+        const reason = args.join(' ');
 
         if (!channel) {
-            return interaction.reply({ content: 'Could not find the announcements channel!', flags: 64 });
+            return message.reply({ content: 'Could not find the announcements channel!' });
         }
 
         let embed = new Discord.EmbedBuilder()
-            .setColor(color.violet_color)
+            .setColor(parseInt(color.violet_color))
             .setTitle('Bot Update!')
             .setDescription(reason)
             .setTimestamp()
@@ -31,10 +37,10 @@ module.exports = {
 
         try {
             await channel.send({ embeds: [embed] });
-            interaction.reply({ content: '✅ Bot status update sent!', flags: 64 });
+            message.reply({ content: '✅ Bot status update sent!' });
         } catch (error) {
             console.error('Error sending bot status:', error);
-            interaction.reply({ content: '❌ Failed to send bot status update.', flags: 64 });
+            message.reply({ content: '❌ Failed to send bot status update.' });
         }
     }
 };

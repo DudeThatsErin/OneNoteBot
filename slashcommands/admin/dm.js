@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require('discord.js');
-const { bot } = require('../config/bot.json');
+const bot = require('../../config/bot.json');
+const color = require('../../config/embed.json');
 
 module.exports = {
     name: 'dm',
@@ -33,7 +34,7 @@ module.exports = {
             );
 
         const dmEmbed = new EmbedBuilder()
-            .setColor(color.deep_purple_color)
+            .setColor(parseInt(color.deep_purple_color, 16))
             .setTitle(`You received a DM from Erin's Helper Bot`)
             .setDescription(`${interaction.user} sent you the following message:\n\`\`\`${message}\`\`\`\n\nIf you have any questions, please send a message to <@575252669443211264>.`)
             .setTimestamp()

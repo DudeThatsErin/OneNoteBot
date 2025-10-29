@@ -21,8 +21,9 @@ module.exports = {
         }
 
         // AFK System - Handle user returning from AFK
-        if (client.afkUsers && client.afkUsers.has(message.author.id)) {
-            client.afkUsers.delete(message.author.id);
+        const isAFK = await client.afkManager.isUserAFK(message.author.id, message.guild.id);
+        if (isAFK) {
+            await client.afkManager.removeUserAFK(message.author.id, message.guild.id);
             
             // Remove (AFK) from nickname
             try {
@@ -52,10 +53,12 @@ module.exports = {
         }
 
         // AFK System - Handle mentions of AFK users
-        if (client.afkUsers && message.mentions.users.size > 0) {
-            for (const [userId, afkData] of client.afkUsers) {
-                if (message.mentions.users.has(userId) && userId !== message.author.id) {
-                    const afkUser = message.mentions.users.get(userId);
+        if (message.mentions.users.size > 0) {
+            const allAFKUsers = await client.afkManager.getAllAFKUsers();
+            
+            for (const afkData of allAFKUsers) {
+                if (message.mentions.users.has(afkData.userId) && afkData.userId !== message.author.id && afkData.guildId === message.guild.id) {
+                    const afkUser = message.mentions.users.get(afkData.userId);
                     const timeSince = Math.floor((Date.now() - afkData.timestamp) / 1000 / 60);
                     
                     let timeText = '';

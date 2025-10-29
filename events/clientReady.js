@@ -1,5 +1,6 @@
 
 const { ActivityType } = require('discord.js');
+const AFKManager = require('../afk-manager.js');
 
 module.exports = {
     name: 'clientReady',
@@ -69,6 +70,10 @@ module.exports = {
         client.user.setStatus(randomStatus.status);
 
         console.log(`🎲 Custom status set: ${randomStatus.state} (${randomStatus.status})`);
+
+        // Initialize AFK Manager
+        client.afkManager = new AFKManager(client);
+        await client.afkManager.initialize();
 
         console.log('|-----------------------------------|')
         console.log('             Error Logs...           ')

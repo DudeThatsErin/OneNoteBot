@@ -11,6 +11,7 @@ OneNoteBot@1.0.0 /var/www/OneNoteBot
 const fs = require('fs');
 const { Client, GatewayIntentBits, Partials, Collection, REST } = require('discord.js');
 const config = require('./config/config.json');
+const { initializeCoreTables } = require('./database-init.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages ], partials: [Partials.Channel] });
 
 // Create a shared REST instance for the entire bot
@@ -34,6 +35,8 @@ client.slashCooldowns = new Collection();
 client.erinCommands = new Collection();
 const { cooldowns, slashCooldowns } = client;
 
+// Initialize core database tables on startup
+initializeCoreTables();
 
 // for all commands
 function readFilesFromPath(pathString) {

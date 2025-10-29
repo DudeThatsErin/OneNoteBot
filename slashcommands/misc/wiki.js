@@ -10,7 +10,7 @@ module.exports = {
           new ButtonBuilder()
             .setLabel('Our Subreddit')
             .setStyle(ButtonStyle.Link)
-            .setURL('https://reddit.com/r/CodingHelp'),
+            .setURL('https://reddit.com/r/OneNote'),
           new ButtonBuilder()
             .setLabel('Our Discord')
             .setStyle(ButtonStyle.Link)

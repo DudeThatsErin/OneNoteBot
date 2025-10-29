@@ -17,14 +17,14 @@ module.exports = {
           //console.log('client ', message.client.slashCommands)
 
             await rest.put(
-                Routes.applicationGuildCommands(bot.id, bot.serverId),
+                Routes.applicationGuildCommands(bot.id, bot.servers.onenote.id),
                 { body: message.client.slashCommands },
             );
 
             message.reply('created client.slashCommands')
 
             await rest.put(
-                Routes.applicationGuildCommands(bot.id, bot.testServerId),
+                Routes.applicationGuildCommands(bot.id, bot.servers.mine.id),
                 { body: message.client.erinCommands },
             );
 

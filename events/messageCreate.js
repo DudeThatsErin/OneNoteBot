@@ -1,7 +1,8 @@
+const config = require('../config/config.json');
 const me = require('../config/owner.json');
 const Discord = require('discord.js');
-const bot = require('../config/bot.json');
-const config = require('../config/config.json');
+const { EmbedBuilder, ButtonStyle } = require('discord.js');
+const connection = require('../database.js')
 
 module.exports = {
     name: 'messageCreate',
@@ -17,6 +18,66 @@ module.exports = {
         if (message.author.bot) {
             //console.log('bot message');
             return;
+        }
+
+        // AFK System - Handle user returning from AFK
+        if (client.afkUsers && client.afkUsers.has(message.author.id)) {
+            client.afkUsers.delete(message.author.id);
+            
+            // Remove (AFK) from nickname
+            try {
+                const member = await message.guild.members.fetch(message.author.id);
+                const currentNick = member.displayName;
+                
+                // Remove (AFK) if it's there
+                if (currentNick.endsWith(' (AFK)')) {
+                    const newNick = currentNick.replace(' (AFK)', '');
+                    await member.setNickname(newNick === member.user.username ? null : newNick);
+                }
+            } catch (error) {
+                if (error.code === 50013) {
+                    console.log(`Cannot update nickname for ${message.author.tag}: Missing permissions (role hierarchy)`);
+                } else {
+                    console.error('Error updating nickname after AFK removal:', error);
+                }
+                // Continue even if nickname update fails
+            }
+            
+            const welcomeBackMessage = await message.reply('👋 Welcome back! Your AFK status has been removed.');
+            
+            // Delete welcome back message after 5 seconds
+            setTimeout(() => {
+                welcomeBackMessage.delete().catch(() => {});
+            }, 5000);
+        }
+
+        // AFK System - Handle mentions of AFK users
+        if (client.afkUsers && message.mentions.users.size > 0) {
+            for (const [userId, afkData] of client.afkUsers) {
+                if (message.mentions.users.has(userId) && userId !== message.author.id) {
+                    const afkUser = message.mentions.users.get(userId);
+                    const timeSince = Math.floor((Date.now() - afkData.timestamp) / 1000 / 60);
+                    
+                    let timeText = '';
+                    if (timeSince < 1) {
+                        timeText = 'just now';
+                    } else if (timeSince < 60) {
+                        timeText = `${timeSince} minute${timeSince !== 1 ? 's' : ''} ago`;
+                    } else {
+                        const hours = Math.floor(timeSince / 60);
+                        timeText = `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+                    }
+                    
+                    const afkReply = await message.reply(`💤 **${afkUser.displayName}** is currently AFK (${timeText}): ${afkData.message}`);
+                    
+                    // Delete AFK reply after 5 seconds
+                    setTimeout(() => {
+                        afkReply.delete().catch(() => {});
+                    }, 5000);
+                    
+                    break; // Only respond once per message even if multiple AFK users are mentioned
+                }
+            }
         };
         if (!message.content.startsWith(config.prefix)) {
             //console.log('does not start with prefix.');
@@ -31,16 +92,16 @@ module.exports = {
         // owner only
         if (command.ownerOnly === 1) {
             if (message.author.id != me.id) {
-                return message.reply({ content: `This is only a command Erin (<@${me.id}>) can use.` });
+                return message.reply({ content: `This is only a command Erin (<@${me.id}>) can use. If you are seeing this in error use the \`${config.prefix}report\` command.` });
             }
         }
 
 
-        const modRoles = [...bot.servers.onenote.modRoles, ...bot.servers.mine.modRoles];
-        const modIDs = [...bot.servers.onenote.modIDs, ...bot.servers.mine.modIDs];
+        const modRoles = ['780941276602302523', '822500305353703434', '718253309101867008', '751526654781685912'];
+        const modIDs = ['732667572448657539', '455926927371534346', '541305895544422430'];
         const isMod = modIDs.reduce((alrdyGod, crr) => alrdyGod || message.content.toLowerCase().split(' ').includes(crr), false);
         let value = 0;
-        if (message.channel.parentID === bot.servers.onenote.modBotSpamChannelId || message.channel.parentID === bot.servers.mine.modBotSpamChannelId) {
+        if (message.channel.parentID === '382210817636040706') {
             for (const ID of modRoles) {
                 if (!message.member.roles.cache.has(ID)) {
                     value++
@@ -61,8 +122,46 @@ module.exports = {
 
                 if (value == modRoles.length) {
                     message.react('❌');
-                    message.reply({ content: `This is a command only moderators can use. You do not have the required permissions. Moderators have the \`<@${modRoles[0]}\>\` role.` });
+                    message.reply({ content: `This is a command only moderators can use. You do not have the required permissions. Moderators have the \`@Moderator\` role or \`@&Junior Mod\` roles. Please run \`${config.prefix}report [issue]\` if you are seeing this in error.` });
                     return;
+                }
+            }
+        }
+
+        const chllMod = ['839863262026924083', '718253309101867008'];
+        if (command.challengeMods === 1) {
+            for (const ID of chllMod) {
+                if (!message.member.roles.cache.has(ID)) {
+                    value++
+                }
+                if (value == chllMod.length) {
+                    message.react('❌');
+                    message.reply({ content: `This is a command only challenge moderators can use. You do not have the required permissions. Challenge moderators have the <@&${chllMod[1]}> role. Please run \`${config.prefix}report [issue]\` if you are seeing this in error.` });
+                    return;
+                }
+            }
+        }
+
+        // Check if challenge system is enabled before querying challenge tables
+        const { isSystemEnabled } = require('../database-init.js');
+        const challengeSystemEnabled = await isSystemEnabled(message.guild.id, 'challenges');
+        
+        let partsResults = [];
+        if (challengeSystemEnabled) {
+            partsResults = await connection.all(
+                `SELECT * FROM Challenges WHERE guildId = ?;`,
+                [message.guild.id]
+            );
+        }
+        
+        if(command.partsOnly === 1) {
+            for(const ID of partsResults.player) {
+                if(message.member.id == ID) {
+                    value++
+                }
+                if(value == partsResults.player.length) {
+                    message.react('❌');
+                    message.reply({ content: `This is a command only challenge participants can use. You do not have the required role. Participants have the \`Participants\` role. If there is an issue, please report this to the Challenge Moderators.`})
                 }
             }
         }
@@ -74,7 +173,7 @@ module.exports = {
 
         const now = Date.now();
         const timestamps = client.cooldowns.get(command.name);
-        const cooldownAmount = (command.cooldown || bot.defaultCooldown) * 1000;
+        const cooldownAmount = (command.cooldown || 1) * 1000;
 
         if (timestamps.has(message.author.id)) {
             const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
@@ -93,27 +192,39 @@ module.exports = {
             command.execute(message, args, client);
         } catch (error) {
             console.error(error);
-            const embed = {
-                color: 0xAA2C2C,
-                title: 'Oh no! An _error_ has appeared!',
-                description: `**Contact Bot Owner:** <@${me.id}>`,
-                fields: [
+            const row = new Discord.ActionRowBuilder()
+                .addComponents(
+                    new Discord.ButtonBuilder()
+                        .setLabel('Erin\'s Support Server')
+                        .setStyle(ButtonStyle.Link)
+                        .setURL('https://discord.gg/tT3VEW8AYF'),
+                    new Discord.ButtonBuilder()
+                        .setLabel('Fill out this form!')
+                        .setStyle(ButtonStyle.Link)
+                        .setURL('https://dudethatserin.com')
+                )
+            const embed = new EmbedBuilder()
+                .setColor(0xAA2C2C)
+                .setTitle('Oh no! An _error_ has appeared!')
+                .setDescription(`**Contact Bot Owner:** <@${me.id}>`)
+                .addFields([
                     {
                         name: '**Error Name:**',
                         value: `\`${error.name}\``
                     }, {
                         name: '**Error Message:**',
                         value: `\`${error.message}\``
-                    }, 
-                ],
-                timestamp: new Date(),
-                footer: {
+                    }, {
+                        name: '**Ways to Report:**',
+                        value: `Run the \`${config.prefix}report\` command, Message Erin on Discord, or use one of the links below.\n\nPlease include all of the information in this embed (message) as well as any additional information you can think to provide. Screenshots are also VERY helpful. Thank you!`
+                    }
+                ])
+                .setTimestamp()
+                .setFooter({
                     text: `Thanks for using ${client.user.tag}! I'm sorry you encountered this error!`,
-                    icon_url: `${client.user.displayAvatarURL()}`,
-                    timestamp: new Date()
-                }
-            };
-            message.channel.send({ embeds: [embed] });
+                    iconURL: `${client.user.displayAvatarURL()}`
+                });
+            message.channel.send({ embeds: [embed], components: [row] });
         }
     }
 }// end client.on message

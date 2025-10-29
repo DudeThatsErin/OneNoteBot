@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const o = require('../config/owner.json');
-const bot = require('../config/bot.json');
+
 module.exports = {
     name: 'interactionCreate',
     async execute(interaction, client) {
@@ -12,12 +12,12 @@ module.exports = {
         // owner only
         if (command.ownerOnly === 1) {
             if (interaction.user.id != o.id) {
-                return interaction.reply({ content: `This is only a command Erin (<@${o.username}>) can use.`, flags: Discord.MessageFlags.Ephemeral });
+                return interaction.reply({ content: `This is only a command Erin (<@${o.username}>) can use. If you are seeing this in error use the \`/report\` command.`, ephemeral: true });
             }
         }
 
         //mod only
-        const modRoles = [...bot.servers.onenote.modRoles, ...bot.servers.mine.modRoles];
+        const modRoles = ['780941276602302523', '822500305353703434', '718253309101867008', '751526654781685912'];
         let value = 0;
         if (command.modOnly === 1) {
             for (const ID of modRoles) {
@@ -26,16 +26,16 @@ module.exports = {
                 }
 
                 if (value == modRoles.length) {
-                    return interaction.reply({ content: `This is a command only moderators can use. You do not have the required permissions. Moderators have the \`<@${modRoles[0]}>\` role.`, flags: Discord.MessageFlags.Ephemeral });
+                    return interaction.reply({ content: `This is a command only moderators can use. You do not have the required permissions. Moderators have the \`@Moderator\` role or \`@&Junior Mod\` roles. Please run \`/report [issue]\` if you are seeing this in error.`, ephemeral: true });
                 }
             }
         }
 
         // botspam channel only
-        const botspam = [bot.servers.onenote.botSpamChannelId, bot.servers.mine.botSpamChannelId, bot.servers.onenote.modBotSpamChannelId, bot.servers.mine.modBotSpamChannelId];
+        const botspam = `433962402292432896`;
         if (command.botSpamOnly === 1) {
-            if (!botspam.includes(interaction.channel.id)) {
-                return interaction.reply({ content: `Please only use this command in the <#${botspam[0]}> channel. This command cannot be used elsewhere. Thank you.`, flags: Discord.MessageFlags.Ephemeral })
+            if (interaction.channel.id != botspam) {
+                return interaction.reply({ content: `Please only use this command in the <#${botspam}> channel. This command cannot be used elsewhere. Thank you.`, ephemeral: true })
             }
         }
 
@@ -46,7 +46,7 @@ module.exports = {
 
         const now = Date.now();
         const timestamps = client.slashCooldowns.get(interaction.commandName);
-        const cooldownAmount = (command.cooldown || bot.defaultCooldown) * 1000;
+        const cooldownAmount = (command.cooldown || 1) * 1000;
         if (timestamps.has(interaction.user.id)) {
             const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
 
@@ -61,42 +61,47 @@ module.exports = {
 
         // actually running the commands.
         try {
-            await command.execute(interaction, client);
+            //await interaction.deferReply();
+            if(`718253204147798047` === interaction.guild.id) {
+                await command.execute(interaction, client);
+            }
+            if(`359760149683896320` === interaction.guild.id) {
+                await command.execute(interaction, client);
+            }
         } catch (error) {
             console.error(error);
             
-            // Handle interaction timeout errors gracefully
-            if (error.code === 10062 || error.message.includes('Unknown interaction')) {
-                console.log('Interaction expired before response could be sent');
-                return;
-            }
-            
-            try {
-                const embed = new Discord.EmbedBuilder()
-                    .setColor(0x000000)
-                    .setTitle('Oh no! An _error_ has appeared!')
-                    .addFields({
-                        name: '**Error Name:**',
-                        value: `\`${error.name}\``
-                    }, {
-                        name: '**Error Message:**',
-                        value: `\`${error.message}\``
-                    }, {
-                        name: '**Error Location:**',
-                        value: `\`${error.stack}\``
-                    }, {
-                        name: '**This has been reported!**',
-                        value: `I have pinged Erin so this has already been reported to her. You do not need to do anything else.`
-                    })
-                    .setTimestamp()
-                    .setFooter({ text: `Thanks for using ${client.user.tag}! I'm sorry you encountered this error!`, icon_url: `${client.user.displayAvatarURL()}`, timestamp: new Date() });
-                
-                // Try to reply, but catch any additional errors
-                if (!interaction.replied && !interaction.deferred) {
+            // Only try to reply if the interaction hasn't been replied to or deferred
+            if (!interaction.replied && !interaction.deferred) {
+                try {
+                    // Truncate error messages to fit Discord's limits
+                    const errorName = error.name ? error.name.substring(0, 1000) : 'Unknown Error';
+                    const errorMessage = error.message ? error.message.substring(0, 1000) : 'No message available';
+                    const errorStack = error.stack ? error.stack.substring(0, 1000) + '...' : 'No stack trace available';
+                    
+                    const embed = new Discord.EmbedBuilder()
+                        .setColor(0x000000)
+                        .setTitle('Oh no! An _error_ has appeared!')
+                        .addFields({
+                            name: '**Error Name:**',
+                            value: `\`${errorName}\``
+                        }, {
+                            name: '**Error Message:**',
+                            value: `\`${errorMessage}\``
+                        }, {
+                            name: '**Error Location:**',
+                            value: `\`${errorStack}\``
+                        }, {
+                            name: '**This has been reported!**',
+                            value: `I have pinged Erin so this has already been reported to her. You do not need to do anything else.`
+                        })
+                        .setTimestamp()
+                        .setFooter({ text: `Thanks for using ${client.user.tag}! I'm sorry you encountered this error!`, icon_url: `${client.user.displayAvatarURL()}` });
+                    
                     await interaction.reply({ content: `Hey, <@${o.id}>! You have an error!`, embeds: [embed] });
+                } catch (replyError) {
+                    console.error('Failed to send error message to user:', replyError);
                 }
-            } catch (replyError) {
-                console.error('Failed to send error message:', replyError.message);
             }
         }
 

@@ -37,6 +37,15 @@ const dbAsync = {
                 else resolve({ id: this.lastID, changes: this.changes });
             });
         });
+    },
+    query: (sql, params = []) => {
+        // Alias for compatibility with existing code that uses .query()
+        return new Promise((resolve, reject) => {
+            db.all(sql, params, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
     }
 };
 
